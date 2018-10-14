@@ -3,42 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using stockboi.Models;
 
 namespace stockboi.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private static string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        
 
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        public List<PerishableItem> GetPerishableItems()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
-        }
-
-        public class WeatherForecast
-        {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
-
-            public int TemperatureF
-            {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
+           var itemList = new List<PerishableItem>();
+           itemList.Add(
+            new PerishableItem {
+                Name = "Milk Gallons",
+                Count = 75,
+                Damaged = 3,
+                ExpirationDate = new DateTime(2018, 10, 20)
             }
+           );
+
+           itemList.Add(
+            new PerishableItem {
+                Name = "Milk Gallons",
+                Count = 10,
+                Damaged = 3,
+                ExpirationDate = new DateTime(2018, 10, 1)
+            }
+           );
+           itemList.Add(
+            new PerishableItem {
+                Name = "Sour Cream 16 oz",
+                Count = 75,
+                Damaged = 3,
+                ExpirationDate = new DateTime(2018, 10, 20)
+            }
+           );
+           itemList.Add(
+            new PerishableItem {
+                Name = "Sour Cream 8 oz",
+                Count = 16,
+                Damaged = 8,
+                ExpirationDate = new DateTime(2018, 10, 9)
+            }
+           );
+
+           return itemList;
         }
+
+       
     }
 }
