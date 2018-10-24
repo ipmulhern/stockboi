@@ -1,19 +1,51 @@
 import React, { Component } from 'react';
+import {formatDate} from '../helpers/DateFormatHelper.js';
 
 export class CurrentStock extends Component {
   displayName = CurrentStock.name
 
   constructor(props) {
     super(props);
-    this.state = { foodItems: [], loading: true, searchText: "" };
+    this.state = { 
+      foodItems: [], 
+      loading: true, 
+      searchText: "",
+      sortButtonStyles: {}
+    };
 
     fetch('api/SampleData/GetPerishableItems')
       .then(response => response.json())
       .then(data => {
-        this.setState({ foodItems: data, loading: false });
+        this.setState({ loading: false }, () => this.sortItems(data, "name"));
       });
 
     this.renderStockTable = this.renderStockTable.bind(this);   
+  }
+
+  sortItems(list, sortType){ 
+    var compare = (a, b) => {
+      if (a[sortType] > b[sortType]){
+        return 1;
+      }
+      if (a[sortType] < b[sortType]){
+        return -1;
+      }
+      return 0;
+    };
+
+    let sortButtonStyles = {
+      name: {cursor: "pointer", color: "dimGrey"},
+      count: {cursor: "pointer", color: "dimGrey"},
+      expirationDate: {cursor: "pointer", color: "dimGrey"},
+      damaged: {cursor: "pointer", color: "dimGrey"}
+    };
+    sortButtonStyles[sortType].color = "black";
+
+    this.setState ({
+      foodItems: list.sort(compare),
+      sortBy: sortType,
+      sortButtonStyles: sortButtonStyles
+    });
   }
 
   renderStockTable(foodItems) {
@@ -25,10 +57,22 @@ export class CurrentStock extends Component {
       <table className='table'>
         <thead>
           <tr>
-            <th>Item Name</th>
-            <th>Current Stock</th>
-            <th>Expiration Date</th>
-            <th>Amount Damaged</th>
+            <th onClick={() => this.sortItems(this.state.foodItems, "name")}
+            style={this.state.sortButtonStyles.name}>
+              Item Name
+            </th>
+            <th onClick={() => this.sortItems(this.state.foodItems, "count")}
+            style={this.state.sortButtonStyles.count}>
+              Current Stock
+            </th>
+            <th onClick={() => this.sortItems(this.state.foodItems, "expirationDate")}
+            style={this.state.sortButtonStyles.expirationDate}>
+              Expiration Date
+            </th>
+            <th onClick={() => this.sortItems(this.state.foodItems, "damaged")} 
+            style={this.state.sortButtonStyles.damaged}>
+              Amount Damaged
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -37,7 +81,7 @@ export class CurrentStock extends Component {
             <tr key={item.name + item.expirationDate}>
               <td>{item.name}</td>
               <td>{item.count} units</td>
-              <td>{item.expirationDate}</td>
+              <td>{formatDate(item.expirationDate.toString())}</td>
               <td>{item.damaged}</td>
             </tr>
           )}
