@@ -23,6 +23,7 @@ export class NavMenu extends Component {
                 Current Stock
               </NavItem>
             </LinkContainer>
+
           </Nav>
         </Navbar.Collapse>
       </Navbar>
