@@ -12,14 +12,17 @@ namespace stockboi.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-
+        private readonly DatabaseContext _databaseContext;
+        public SampleDataController(DatabaseContext databaseContext)
+        {
+            _databaseContext = databaseContext;
+        }
 
         [HttpGet("[action]")]
         public List<PerishableItem> GetPerishableItems()
         {
-            var databaseContext = new DatabaseContext();
-            var perishableItemDatabaseModels = databaseContext.PerishableItems.ToList();
-            var productDescriptionDatabaseModels = databaseContext.ProductDescription.ToList();
+            var perishableItemDatabaseModels = _databaseContext.PerishableItems.ToList();
+            var productDescriptionDatabaseModels = _databaseContext.ProductDescription.ToList();
             var perishableItems = DatabaseModelToModelMapper.MapFrom(perishableItemDatabaseModels, productDescriptionDatabaseModels);
 
             return perishableItems;
