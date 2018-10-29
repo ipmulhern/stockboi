@@ -4,6 +4,33 @@
     font-weight: 400;
 }
 
+.stockboi-title {
+    font-size: 4em;
+    letter-spacing: .1em;
+    font-weight: 400;
+    display: inline;
+}
+
+.login{
+    height: 600px;
+    width: 500px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    position: relative;
+}
+
+.red {
+    color: #c90000;
+}
+
+.shadow {
+    -webkit-box-shadow: 3px 5px 16px -4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 3px 5px 16px -4px rgba(0,0,0,0.75);
+    box-shadow: 3px 5px 16px -4px rgba(0,0,0,0.75);
+}
+
 @media (max-width: 767px) {
     /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
     body {
