@@ -8,7 +8,7 @@ namespace stockboi.DatabaseModels {
         public DbSet<PerishableItemDatabaseModel> PerishableItems {get;set;}
         public DbSet<ProduceDatabaseModel> Produce {get;set;}
         public DbSet<BatchDatabaseModel> Batch {get;set;}
-        public DbSet<MasterStockDatabaseModel> MasterStock {get;set;}
+        //public DbSet<MasterStockDatabaseModel> MasterStock {get;set;}
         public DbSet<ProductDescriptionDatabaseModel> ProductDescription {get;set;}
         public DbSet<UserInformationDatabaseModel> UserInformation {get;set;}
     }

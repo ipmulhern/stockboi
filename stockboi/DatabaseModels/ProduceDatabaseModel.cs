@@ -10,7 +10,6 @@ namespace stockboi.DatabaseModels {
         public float Weight { get; set; }
         [Column("Damaged Weight")]
         public float DamagedWeight { get; set; }
-        public decimal Price { get; set; }
         public string Description { get; set; }
         [Column("Estimated Expiration")]
         public DateTime EstimatedExpiration { get; set; }

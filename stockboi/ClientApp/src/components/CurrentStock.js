@@ -13,7 +13,7 @@ export class CurrentStock extends Component {
       sortButtonStyles: {}
     };
 
-    fetch('api/SampleData/GetPerishableItems')
+    fetch('api/PerishableItem/GetPerishableItems')
       .then(response => response.json())
       .then(data => {
         this.setState({ loading: false }, () => this.sortItems(data, "name"));
@@ -36,7 +36,6 @@ export class CurrentStock extends Component {
     let sortButtonStyles = {
       name: {cursor: "pointer", color: "dimGrey"},
       count: {cursor: "pointer", color: "dimGrey"},
-      expirationDate: {cursor: "pointer", color: "dimGrey"},
       damaged: {cursor: "pointer", color: "dimGrey"}
     };
     sortButtonStyles[sortType].color = "black";
@@ -65,10 +64,6 @@ export class CurrentStock extends Component {
             style={this.state.sortButtonStyles.count}>
               Current Stock
             </th>
-            <th onClick={() => this.sortItems(this.state.foodItems, "expirationDate")}
-            style={this.state.sortButtonStyles.expirationDate}>
-              Expiration Date
-            </th>
             <th onClick={() => this.sortItems(this.state.foodItems, "damaged")} 
             style={this.state.sortButtonStyles.damaged}>
               Amount Damaged
@@ -78,10 +73,9 @@ export class CurrentStock extends Component {
         <tbody>
           {foodItems.filter(item => 
             item.name.toLowerCase().indexOf(this.state.searchText.toLowerCase()) === 0).map(item =>
-            <tr key={item.name + item.expirationDate}>
+            <tr key={item.name}>
               <td>{item.name}</td>
               <td>{item.count} units</td>
-              <td>{formatDate(item.expirationDate.toString())}</td>
               <td>{item.damaged}</td>
             </tr>
           )}

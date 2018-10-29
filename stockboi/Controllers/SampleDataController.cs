@@ -10,10 +10,10 @@ using stockboi.Mappers;
 namespace stockboi.Controllers
 {
     [Route("api/[controller]")]
-    public class SampleDataController : Controller
+    public class PerishableItemController : Controller
     {
         private readonly DatabaseContext _databaseContext;
-        public SampleDataController(DatabaseContext databaseContext)
+        public PerishableItemController(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
         }
@@ -23,11 +23,10 @@ namespace stockboi.Controllers
         {
             var perishableItemDatabaseModels = _databaseContext.PerishableItems.ToList();
             var productDescriptionDatabaseModels = _databaseContext.ProductDescription.ToList();
-            var perishableItems = DatabaseModelToModelMapper.MapFrom(perishableItemDatabaseModels, productDescriptionDatabaseModels);
+            var batchDatabaseModels = _databaseContext.Batch.ToList();
+            var perishableItems = DatabaseModelToModelMapper.MapFrom(perishableItemDatabaseModels, productDescriptionDatabaseModels, batchDatabaseModels);
 
             return perishableItems;
         }
-
-
     }
 }

@@ -6,6 +6,6 @@ namespace stockboi.DatabaseModels {
     [Table("MASTER_STOCK")]
     public class MasterStockDatabaseModel {
         public int ItemId { get; set; }
-        public int PLU { get; set; }
+        public int UPC { get; set; }
     }
 }

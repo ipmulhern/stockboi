@@ -9,13 +9,11 @@ namespace stockboi.DatabaseModels {
         [Column("Batch Number")]
         public int BatchNumber { get; set; }
         [Column("PLU Number")]
-        public int PLU { get; set; }
+        public int UPC { get; set; }
         public DateTime Expiration { get; set; }
-        public float Weight { get; set; }
+        public double Weight { get; set; }
         [Column("Date Received")]
         public DateTime DateReceived { get; set; }
-        [Column("Price of Order")]
-        public decimal OrderPrice { get; set; }
         public int Units { get; set; }
     }
 }
