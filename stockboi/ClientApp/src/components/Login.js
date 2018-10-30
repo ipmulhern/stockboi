@@ -14,13 +14,18 @@ export class Login extends React.Component {
         this.verifyUsernameAndPassword = this.verifyUsernameAndPassword.bind(this);
         this.verifyPin = this.verifyPin.bind(this);
         this.showError = this.showError.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     renderPin(){
         if(this.state.authenticated){
             return (
                 <div>
-                    <input id="pin" maxlength={50} placeholder="pin" style={{marginBottom: "10px"}}/>
+                    <input id="pin" 
+                        maxlength={50} 
+                        placeholder="pin" 
+                        style={{marginBottom: "10px"}} 
+                        onKeyPress={this.handleKeyPress}/>
                     <br/>
                 </div>
             );
@@ -68,6 +73,15 @@ export class Login extends React.Component {
         }
     }
 
+    handleKeyPress(event){
+        if(event.key === 'Enter'){
+            !this.state.authenticated 
+            ?this.verifyUsernameAndPassword()
+            :this.verifyPin();
+        }
+        console.log(event.key, event.key === 'Enter');
+    }
+
     render(){
         return(
             <div>
@@ -79,7 +93,12 @@ export class Login extends React.Component {
                     <div style={{marginLeft: "auto", marginRight:"auto", width: "38%", textAlign: "center"}}>
                         <input id="username" maxlength={50} placeholder="username" style={{marginBottom: "10px"}}/>
                         <br/>
-                        <input id="password" type="password" maxlength={50} placeholder="password" style={{marginBottom: "10px"}}/>
+                        <input id="password"
+                            type="password"
+                             maxlength={50} 
+                             placeholder="password" 
+                             style={{marginBottom: "10px"}}
+                             onKeyPress={this.handleKeyPress}/>
                         <br/>
                         {this.renderPin()}
                         {!this.state.loading?
