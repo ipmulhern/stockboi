@@ -21,6 +21,15 @@
     position: relative;
 }
 
+.past-orders:hover {
+    background-color: #4189C7;
+    color: white;
+}
+
+.past-orders{
+    cursor: pointer;
+}
+
 .red {
     color: #c90000;
 }
@@ -29,6 +38,13 @@
     -webkit-box-shadow: 3px 5px 16px -4px rgba(0,0,0,0.75);
     -moz-box-shadow: 3px 5px 16px -4px rgba(0,0,0,0.75);
     box-shadow: 3px 5px 16px -4px rgba(0,0,0,0.75);
+}
+
+.internal-shadow {
+    -webkit-box-shadow: inset 0px 0px 36px -12px rgba(0,0,0,0.29);
+    -moz-box-shadow: inset 0px 0px 36px -12px rgba(0,0,0,0.29);
+    box-shadow: inset 0px 0px 36px -12px rgba(0,0,0,0.29);
+    margin-top: 20px;
 }
 
 @media (max-width: 767px) {
