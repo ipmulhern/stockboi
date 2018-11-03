@@ -79,7 +79,6 @@ export class Login extends React.Component {
             ?this.verifyUsernameAndPassword()
             :this.verifyPin();
         }
-        console.log(event.key, event.key === 'Enter');
     }
 
     render(){

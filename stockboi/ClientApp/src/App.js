@@ -36,7 +36,7 @@ export default class App extends Component {
       this.state.loggedIn 
       ?<Layout>
         <Route exact path='/' component={CurrentStock} />
-        <Route exact path='/AddStock' component={AddStock} />
+        <Route exact path='/Orders' component={AddStock} />
       </Layout>
       :<Login setLoggedIn={this.setLoggedIn} setPermissionLevel={this.setPermissionLevel}/>
     );
