@@ -97,7 +97,7 @@ export class CurrentStock extends Component {
       : this.renderStockTable(this.state.foodItems);
 
     return (
-      <div>
+      <div className="content">
         <h1>Current Stock</h1>
         {contents}
       </div>
