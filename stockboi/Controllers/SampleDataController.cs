@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using stockboi.Models;
+using stockboi.Helpers;
+
 
 namespace stockboi.Controllers
 {
@@ -14,8 +17,11 @@ namespace stockboi.Controllers
 
         [HttpGet("[action]")]
         public List<PerishableItem> GetPerishableItems()
-        {
+        {   
            var itemList = new List<PerishableItem>();
+           if (!LoggedInUsers.UserLoggedIn(HttpContext.Session.GetString("Username"))){
+                return itemList;
+            }
            itemList.Add(
             new PerishableItem {
                 Name = "Milk Gallons",

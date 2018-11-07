@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 import { CurrentStock } from './components/CurrentStock';
 import { AddStock } from './components/AddStock';
 import { Login } from './components/Login';
+import axios from 'axios';
 
 export default class App extends Component {
   displayName = App.name
@@ -16,6 +17,19 @@ export default class App extends Component {
 
     this.setLoggedIn = this.setLoggedIn.bind(this);
     this.setPermissionLevel = this.setPermissionLevel.bind(this);
+    this.logout = this.logout.bind(this);
+  }
+
+  componentDidMount(){
+    axios.get('api/Login/GetUser')
+      .then(response => {
+        if (response.data.username){
+          this.setState({
+            loggedIn: true,
+            permissionLevel: response.data.permissionLevel
+          });
+        }
+      });
   }
 
   setLoggedIn(loggedIn){
@@ -24,6 +38,17 @@ export default class App extends Component {
     });
   }
 
+  logout(){
+    axios.get('api/Login/Logout')
+      .then(response => {
+        if (response.data){
+          this.setState({
+            loggedIn: false,
+            permissionLevel: null
+          });
+        }
+      });
+  }
   
   setPermissionLevel(permissionLevel){
     this.setState({
@@ -34,7 +59,7 @@ export default class App extends Component {
   render() {
     return (
       this.state.loggedIn 
-      ?<Layout>
+      ?<Layout logout={this.logout}>
         <Route exact path='/' component={CurrentStock} />
         <Route exact path='/Orders' component={AddStock} />
       </Layout>
