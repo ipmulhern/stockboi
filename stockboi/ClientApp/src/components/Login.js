@@ -56,7 +56,12 @@ export class Login extends React.Component {
 
     verifyPin(){
         this.setState({loading: true});
-        axios.post('api/Login/VerifyPin', { Keyword: document.getElementById("pin").value.toString()})
+        let request = {
+            Pin: document.getElementById("pin").value.toString(),
+            Username: document.getElementById("username").value,
+            Password: document.getElementById("password").value
+        };
+        axios.post('api/Login/VerifyPin', request)
             .then(response => {
                 if(response.data.valid){
                     this.props.setLoggedIn(true);
