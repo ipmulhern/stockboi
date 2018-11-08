@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Http;
 namespace stockboi.Controllers
 {
     [Route("api/[controller]")]
-    public class LoginController : Controller
+    public class OrdersController : Controller
     {
         [HttpPost("[action]")]
         public PagingResponse<User> Logout([FromBody] PagingRequest request){

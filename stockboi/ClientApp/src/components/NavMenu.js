@@ -28,6 +28,11 @@ export class NavMenu extends Component {
                 Orders
               </NavItem>
             </LinkContainer>
+            <LinkContainer to={'/StockAdmin'} exact>
+              <NavItem>
+                Stock Admin
+              </NavItem>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
