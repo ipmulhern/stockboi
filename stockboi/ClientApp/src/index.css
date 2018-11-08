@@ -4,6 +4,82 @@
     font-weight: 400;
 }
 
+.stockboi-title {
+    font-size: 4em;
+    letter-spacing: .1em;
+    font-weight: 400;
+    display: inline;
+}
+
+.login{
+    height: 600px;
+    width: 500px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    position: relative;
+}
+
+.past-orders{
+    cursor: pointer;
+}
+
+input.amount{
+    height: 30px;
+    width: 200px;
+}
+
+li.typeahead-dropdown {
+    height: 40px;
+    border-top-color: gray;
+    padding: 10px;
+    border-top-style: solid;
+    border-top-width: .5px;
+}
+
+ul.typeahead-dropdown {
+    list-style: none;
+    padding: 0px;
+}
+
+.typeahead-shadow {
+    -webkit-box-shadow: 7px 7px 5px -7px rgba(0,0,0,0.75);
+    -moz-box-shadow: 7px 7px 5px -7px rgba(0,0,0,0.75);
+    box-shadow: 7px 7px 5px -7px rgba(0,0,0,0.75);
+}
+
+select.amount{
+    height: 30px;
+    width: 50px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.content{
+    margin-top: 20px;
+    margin-left: 3%; 
+    margin-right: auto; 
+    width: 90%;
+}
+
+.red {
+    color: #c90000;
+}
+
+.shadow {
+    -webkit-box-shadow: 3px 5px 16px -4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 3px 5px 16px -4px rgba(0,0,0,0.75);
+    box-shadow: 3px 5px 16px -4px rgba(0,0,0,0.75);
+}
+
+.internal-shadow {
+    -webkit-box-shadow: inset 0px 0px 36px -12px rgba(0,0,0,0.29);
+    -moz-box-shadow: inset 0px 0px 36px -12px rgba(0,0,0,0.29);
+    box-shadow: inset 0px 0px 36px -12px rgba(0,0,0,0.29);
+    margin-top: 20px;
+}
+
 @media (max-width: 767px) {
     /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
     body {

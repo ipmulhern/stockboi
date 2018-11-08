@@ -30,6 +30,8 @@ namespace stockboi
                 configuration.RootPath = "ClientApp/build";
             });
 
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer("Server=tcp:stockboi.database.windows.net,1433;Initial Catalog=Stockboi;Persist Security Info=False;User ID=stockman;Password=Ferguson34;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
         }
 
@@ -49,6 +51,8 @@ namespace stockboi
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

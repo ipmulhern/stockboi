@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using stockboi.Models;
 using stockboi.DatabaseModels;
 using stockboi.Mappers;
+using stockboi.Helpers;
+
 
 namespace stockboi.Controllers
 {
@@ -25,6 +28,10 @@ namespace stockboi.Controllers
             var productDescriptionDatabaseModels = _databaseContext.ProductDescription.ToList();
             var batchDatabaseModels = _databaseContext.Batch.ToList();
             var perishableItems = DatabaseModelToModelMapper.MapFrom(perishableItemDatabaseModels, productDescriptionDatabaseModels, batchDatabaseModels);
+            }
+                return itemList;
+           if (!LoggedInUsers.UserLoggedIn(HttpContext.Session.GetString("Username"))){
+           var itemList = new List<PerishableItem>();
 
             return perishableItems;
         }

@@ -12,8 +12,15 @@ export class Layout extends Component {
           <Col sm={3}>
             <NavMenu />
           </Col>
-          <Col sm={9}>
+          <Col sm={8}>
             {this.props.children}
+          </Col>
+          <Col sm={1}>
+            <br/>
+            <a style={{cursor: "pointer"}}
+              onClick={()=> this.props.logout()}>
+              Logout
+            </a>
           </Col>
         </Row>
       </Grid>
