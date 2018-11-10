@@ -28,6 +28,7 @@ export class StockAdmin extends React.Component {
         this.renderEditStock = this.renderEditStock.bind(this);
         this.renderAddItem = this.renderAddItem.bind(this);
         this.onValid = this.onValid.bind(this);
+        this.editItemValid = this.editItemValid.bind(this);
     }
 
     onValid(item){
@@ -42,10 +43,10 @@ export class StockAdmin extends React.Component {
         let index = this.state.allItems.findIndex(item => item.UPC === this.state.editUPC);
         let UPCNotRepeating = index !== -1 || this.state.allItems[index].ItemName === this.state.editName;
 
-        index = this.state.allItems.findIndex(item => item.Name === this.state.editUPC);
-        let UPCNotRepeating = index !== -1 || this.state.allItems[index].ItemName === this.state.editName;
+        index = this.state.allItems.findIndex(item => item.Name === this.state.editName);
+        let nameNotRepeating = index !== -1 || this.state.allItems[index].UPC === this.state.editUPC;
 
-        return UPCNotRepeating && this.state.valid 
+        return UPCNotRepeating && nameNotRepeating && this.state.valid && editDescription.length > 0;
     }
     
     renderEditStock(){
@@ -71,6 +72,12 @@ export class StockAdmin extends React.Component {
                                 Description: </p>
                             <textarea style={{width: "300px", height:"120px"}} value={this.state.editDescription}
                                 onChange={(e) => this.setState({editDescription: e.target.value})}/>
+                        </div>
+                        <div>
+                            <p>Item type: </p>
+                            <select>
+                                <option value=""></option>
+                            </select>
                         </div>
                     </div>
                 }
