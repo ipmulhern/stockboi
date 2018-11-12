@@ -6,11 +6,11 @@ namespace stockboi.DatabaseModels {
     [Table("PRODUCT_DESCRIPTION")]
     public class ProductDescriptionDatabaseModel {
         [Key]
-        [Column("PLU")]
+        [Column("UPC")]
         public int UPC { get; set; }
-        [Column("Product Description")]
+        [Column("Product_Description")]
         public string ProductDescription { get; set; }
-        [Column("Product Name")]
+        [Column("Product_Name")]
         public string ProductName { get; set; }
     }
 }

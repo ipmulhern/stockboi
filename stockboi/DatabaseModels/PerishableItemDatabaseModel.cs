@@ -6,10 +6,10 @@ namespace stockboi.DatabaseModels {
     [Table("STOCK_P")]
     public class PerishableItemDatabaseModel {
         [Key]
-        [Column("PLU")]
+        [Column("UPC")]
         public int UPC { get; set; }
         public int Units { get; set; }
-        [Column("Damaged Units")]
+        [Column("Damaged_Units")]
         public int DamagedUnits { get; set; }
         public string Description { get; set; }
         public DateTime Expiration { get; set; }
