@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Typeahead} from './Typeahead.js';
 
 export class AddItem extends React.Component {
@@ -33,9 +33,9 @@ export class AddItem extends React.Component {
         let newDate = null;
         let date = e.target.value.split('/');
         if (date.length === 3 && date[0].length === 2 && date[1].length === 2 && date[2].length === 4){
-            let month = parseInt(date[0]) - 1;
-            let day = parseInt(date[1]);
-            let year = parseInt(date[2]);
+            let month = parseInt(date[0], 10) - 1;
+            let day = parseInt(date[1], 10);
+            let year = parseInt(date[2], 10);
             if (month < 12 && day <= new Date(year, month + 1, 0).getDate()){
                 newDate = new Date(year, month, day);
             }
@@ -44,7 +44,7 @@ export class AddItem extends React.Component {
     }
 
     handleAmount(e){
-        this.setState({amount: parseInt(e.target.value)}, this.returnItem);
+        this.setState({amount: parseInt(e.target.value, 10)}, this.returnItem);
     }
 
     handleAmountType(e){

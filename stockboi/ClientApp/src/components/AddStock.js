@@ -198,7 +198,7 @@ handlePastOrderSearch(e){
     return (
       <div>
         <div className="content">
-          <Tabs defaultActiveKey={2}>
+          <Tabs id="addStockTabs" defaultActiveKey={2}>
             <Tab eventKey={1} title="New Order">
            {this.renderNewOrder()}
             </Tab>
