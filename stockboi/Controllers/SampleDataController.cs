@@ -5,60 +5,33 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using stockboi.Models;
+using stockboi.DatabaseModels;
+using stockboi.Mappers;
 using stockboi.Helpers;
-
 
 namespace stockboi.Controllers
 {
     [Route("api/[controller]")]
-    public class SampleDataController : Controller
+    public class PerishableItemController : Controller
     {
-        
+        private readonly DatabaseContext _databaseContext;
+        public PerishableItemController(DatabaseContext databaseContext)
+        {
+            _databaseContext = databaseContext;
+        }
 
         [HttpGet("[action]")]
         public List<PerishableItem> GetPerishableItems()
-        {   
-           var itemList = new List<PerishableItem>();
-           if (!LoggedInUsers.UserLoggedIn(HttpContext.Session.GetString("Username"))){
-                return itemList;
-            }
-           itemList.Add(
-            new PerishableItem {
-                Name = "Milk Gallons",
-                Count = 75,
-                Damaged = 3,
-                ExpirationDate = new DateTime(2018, 10, 20)
-            }
-           );
+        {
+            if (!LoggedInUsers.UserLoggedIn(HttpContext.Session.GetString("Username"))){
+                return new List<PerishableItem>();
+           }
 
-           itemList.Add(
-            new PerishableItem {
-                Name = "Milk Gallons",
-                Count = 10,
-                Damaged = 3,
-                ExpirationDate = new DateTime(2018, 10, 1)
-            }
-           );
-           itemList.Add(
-            new PerishableItem {
-                Name = "Sour Cream 16 oz",
-                Count = 75,
-                Damaged = 3,
-                ExpirationDate = new DateTime(2018, 10, 20)
-            }
-           );
-           itemList.Add(
-            new PerishableItem {
-                Name = "Sour Cream 8 oz",
-                Count = 16,
-                Damaged = 8,
-                ExpirationDate = new DateTime(2018, 10, 9)
-            }
-           );
-
-           return itemList;
+            var perishableItemDatabaseModels = _databaseContext.PerishableItems.ToList();
+            var productDescriptionDatabaseModels = _databaseContext.ProductDescription.ToList();
+            var batchDatabaseModels = _databaseContext.Batch.ToList();
+            var perishableItems = DatabaseModelToModelMapper.MapFrom(perishableItemDatabaseModels, productDescriptionDatabaseModels, batchDatabaseModels);
+            return perishableItems;
         }
-
-       
     }
 }
