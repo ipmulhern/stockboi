@@ -17,5 +17,6 @@ namespace stockboi.DatabaseModels {
         [Column("Received")]
         public DateTime DateReceived { get; set; }
         public int Units { get; set; }
+        public double Damaged { get; set; }
     }
 }

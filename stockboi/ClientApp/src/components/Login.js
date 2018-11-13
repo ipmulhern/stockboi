@@ -95,9 +95,12 @@ export class Login extends React.Component {
                         <h1 className="stockboi-title red" style={{marginLeft: "0px"}}>I</h1>
                     </div>
                     <div style={{marginLeft: "auto", marginRight:"auto", width: "38%", textAlign: "center"}}>
-                        <input id="username" maxlength={50} placeholder="username" style={{marginBottom: "10px"}}/>
+                        <input 
+                            id="username" maxlength={50} placeholder="username" 
+                            style={{marginBottom: "10px"}} disabled={this.state.authenticated}/>
                         <br/>
                         <input id="password"
+                            disabled={this.state.authenticated}
                             type="password"
                              maxlength={50} 
                              placeholder="password" 

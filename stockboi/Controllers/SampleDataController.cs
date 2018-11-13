@@ -8,6 +8,7 @@ using stockboi.Models;
 using stockboi.DatabaseModels;
 using stockboi.Mappers;
 using stockboi.Helpers;
+using stockboi.RequestModels;
 
 namespace stockboi.Controllers
 {
@@ -32,6 +33,25 @@ namespace stockboi.Controllers
             var batchDatabaseModels = _databaseContext.Batch.ToList();
             var perishableItems = DatabaseModelToModelMapper.MapFrom(perishableItemDatabaseModels, productDescriptionDatabaseModels, batchDatabaseModels);
             return perishableItems;
+        }
+
+        [HttpPost("[action]")]
+        public PagingResponse<Batch> GetAllItems([FromBody] PagingRequest request){
+            var itemDescriptions = _databaseContext.ProductDescription.ToList();
+            var batchDatabaseModels = _databaseContext.Batch.ToList();
+            var batches = BatchMapper.MapTo(batchDatabaseModels, itemDescriptions);
+            batches = batches.OrderBy(x => typeof(Batch).GetProperty(request.SortBy).GetValue(x)).ToList();
+            var response = new PagingResponse<Batch>();
+
+            response.NumberOfPages = batches.Count / request.NumberOfItemsPerPage;
+            if (batches.Count % request.NumberOfItemsPerPage != 0) response.NumberOfPages += 1;
+            
+            var startingIndex = request.NumberOfItemsPerPage * (request.PageSelected - 1);
+            response.Data = batches.GetRange(
+                startingIndex,
+                request.NumberOfItemsPerPage + startingIndex < batches.Count 
+                    ? request.NumberOfItemsPerPage : batches.Count - startingIndex);
+            return response;
         }
     }
 }

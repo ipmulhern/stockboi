@@ -8,8 +8,6 @@ namespace stockboi.DatabaseModels {
         [Column("UPC")]
         public int UPC { get; set; }
         public int Units { get; set; }
-        [Column("Damaged_Units")]
-        public int DamagedUnits { get; set; }
         public string Description { get; set; }
     }
 }

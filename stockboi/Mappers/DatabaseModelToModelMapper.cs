@@ -28,7 +28,7 @@ namespace stockboi.Mappers
             {
                 Name = productDescription != null ? productDescription.ProductName : "Invalid Product",
                 Count = databaseModel.Units,
-                Damaged = databaseModel.DamagedUnits,
+                Damaged = 5,
                 ExpiredCount = expiredItemCount
             };
         }
