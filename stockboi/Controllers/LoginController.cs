@@ -83,8 +83,6 @@ namespace stockboi.Controllers
              var client = _clientFactory.CreateClient("authy");
              var httpResponse = await client.SendAsync(requestMessage);
 
-            httpResponse.EnsureSuccessStatusCode();
-
             var result = await httpResponse.Content.ReadAsAsync<T>();
             return result;
         }

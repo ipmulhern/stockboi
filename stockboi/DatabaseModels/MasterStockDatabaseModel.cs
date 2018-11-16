@@ -5,6 +5,7 @@ using System;
 namespace stockboi.DatabaseModels {
     [Table("MASTER_STOCK")]
     public class MasterStockDatabaseModel {
+        [Key]
         [Column("itemId")]
         public int ItemId { get; set; }
         [Column("UPC")]
