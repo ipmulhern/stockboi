@@ -12,10 +12,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace stockboi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class OrdersController : Controller
     {
-        [HttpPost("[action]")]
+        [HttpPost]
         public PagingResponse<User> Logout([FromBody] PagingRequest request){
             return new PagingResponse<User>();
         }

@@ -5,48 +5,61 @@ using stockboi.DatabaseModels;
 using stockboi.RequestModels;
 using stockboi.Helpers;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace stockboi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class LoginController : Controller
     {
         private readonly DatabaseContext _databaseContext;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public LoginController(DatabaseContext databaseContext){
+        public LoginController(DatabaseContext databaseContext, IHttpClientFactory httpClientFactory){
             _databaseContext = databaseContext;
+            _clientFactory = httpClientFactory;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public VerifyUsernameAndPasswordResponse VerifyUsernameAndPassword(
             [FromBody] UsernameAndPasswordRequest request){
             var users = _databaseContext.UserInformation.Where(x => x.Username ==request.Username).ToList();
             var valid = users.Count > 0 ? users[0].Password == request.Password : false;
+            
+            if (valid) {
+                var authyId = "28301122"; //users[0].AuthyId;
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, "sms/" + authyId);
+                var result = Send<AuthySMSSendResponse>(httpRequest).Result;
+            }
             return new VerifyUsernameAndPasswordResponse{
                 Valid = valid,
                 PermissionLevel = users.Count > 0 ? users[0].AccessLevel : 2
             };
         }
 
-       [HttpPost("[action]")]
+       [HttpPost]
         public VerifyUsernameAndPasswordResponse VerifyPin([FromBody] VerifyPinRequest request){
-            var valid = request.Pin == "1234";
-            if (valid){
+            var authyId = "28301122"; //_databaseContext.UserInformation.Single(x => x.Username ==request.Username).AuthyId;
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, "verify/" + int.Parse(request.Pin) + "/" + authyId);
+            var result = Send<AuthyPinVerificationResponse>(httpRequest).Result;
+            
+            if (result.Success){
                 LoginUser(request);
             }
 
             return new VerifyUsernameAndPasswordResponse{
-                Valid = valid
+                Valid = result.Success
             };
         }
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public bool Logout(){
             LoggedInUsers.RemoveUser(HttpContext.Session.GetString("Username"));
             return !LoggedInUsers.UserLoggedIn(HttpContext.Session.GetString("Username"));
         }
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public UserInformationDatabaseModel GetUser() {
             var username = HttpContext.Session.GetString("Username");
             if (username != null && LoggedInUsers.UserLoggedIn(username)){
@@ -64,6 +77,16 @@ namespace stockboi.Controllers
                 LoggedInUsers.AddUser(user);
                 HttpContext.Session.SetString("Username", user.Username);
             }   
+        }
+
+        private async Task<T> Send<T>(HttpRequestMessage requestMessage) {
+             var client = _clientFactory.CreateClient("authy");
+             var httpResponse = await client.SendAsync(requestMessage);
+
+            httpResponse.EnsureSuccessStatusCode();
+
+            var result = await httpResponse.Content.ReadAsAsync<T>();
+            return result;
         }
     }
 }

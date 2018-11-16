@@ -12,7 +12,7 @@ using stockboi.RequestModels;
 
 namespace stockboi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class PerishableItemController : Controller
     {
         private readonly DatabaseContext _databaseContext;
@@ -21,7 +21,7 @@ namespace stockboi.Controllers
             _databaseContext = databaseContext;
         }
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public List<PerishableItem> GetPerishableItems()
         {
             if (!LoggedInUsers.UserLoggedIn(HttpContext.Session.GetString("Username"))){
@@ -35,7 +35,7 @@ namespace stockboi.Controllers
             return perishableItems;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public PagingResponse<Batch> GetAllItems([FromBody] PagingRequest request){
             var itemDescriptions = _databaseContext.ProductDescription.ToList();
             var batchDatabaseModels = _databaseContext.Batch.ToList();
