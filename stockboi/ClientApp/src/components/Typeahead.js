@@ -36,7 +36,7 @@ export class Typeahead extends React.Component {
     }
 
     listItemClick(e){
-        document.getElementById("typeaheadInput").value = e.target.innerHTML;
+        document.getElementById(this.props.id ? this.props.id : "typeaheadInput").value = e.target.innerHTML;
         this.setState({
             selected: [],
             valid: true
@@ -72,10 +72,11 @@ export class Typeahead extends React.Component {
         return (
             <div>
                 <input 
-                    id="typeaheadInput"
+                    id={this.props.id ? this.props.id : "typeaheadInput"}
                     onChange={this.handleTyping} 
                     style={{width: "300px", height: "30px", marginTop: "20px"}}
                     placeholder="Enter Item Name or UPC Number"
+                    disabled={this.props.disabled}
                 />
                 {this.renderChoices()}
             </div>
