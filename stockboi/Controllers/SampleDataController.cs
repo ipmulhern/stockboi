@@ -40,7 +40,12 @@ namespace stockboi.Controllers
             var itemDescriptions = _databaseContext.ProductDescription.ToList();
             var batchDatabaseModels = _databaseContext.Batch.ToList();
             var batches = BatchMapper.MapTo(batchDatabaseModels, itemDescriptions);
-            batches = batches.OrderBy(x => typeof(Batch).GetProperty(request.SortBy).GetValue(x)).ToList();
+            if (request.SortBy != "Count"){
+                batches = batches.OrderBy(x => typeof(Batch).GetProperty(request.SortBy).GetValue(x)).ToList();
+            }
+            else {
+                batches = batches.OrderBy(x => x.Units).ToList();
+            }
             var response = new PagingResponse<Batch>();
 
             response.NumberOfPages = batches.Count / request.NumberOfItemsPerPage;

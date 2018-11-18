@@ -8,5 +8,6 @@ namespace stockboi.Models
         public double ExpiredWeight {get; set;}
         public double DamagedWeight {get; set;}
         public DateTime  ExpirationDate {get; set;}
+        public decimal Price {get; set;}
     } 
 }

@@ -5,7 +5,7 @@ using System;
 namespace stockboi.Models{
     public class Batch {
         public string ItemName { get; set; }
-        public int UPC { get; set; }
+        public string UPC { get; set; }
         public int Units { get; set; }
         public double Weight { get; set; }
         public DateTime Expiration { get; set; }

@@ -5,10 +5,11 @@ using System;
 namespace stockboi.DatabaseModels {
     [Table("MASTER_STOCK")]
     public class MasterStockDatabaseModel {
-        [Column("itemId")]
+        [Column("itemID")]
+        [Key]
         public int ItemId { get; set; }
         [Column("UPC")]
-        public int UPC { get; set; }
+        public string UPC { get; set; }
         [Column("Item_Type")]
         public int ItemType { get; set; }
     }

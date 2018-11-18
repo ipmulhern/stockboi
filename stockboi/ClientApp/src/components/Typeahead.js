@@ -16,11 +16,11 @@ export class Typeahead extends React.Component {
     handleTyping(e){
         let selected= this.props.allItemChoices.filter(item => {
             if (e.target.value === "") return false;
-            return item.UPC.toString() === e.target.value ||
-            item.ItemName.toLowerCase().indexOf(e.target.value.toLowerCase()) === 0;
+            return item.upc.toString() === e.target.value ||
+            item.productName.toLowerCase().indexOf(e.target.value.toLowerCase()) === 0;
         });    
         let valid = selected.length === 1 && 
-            e.target.value.toLowerCase() === selected[0].ItemName.toLowerCase();
+            e.target.value.toLowerCase() === selected[0].productName.toLowerCase();
 
         this.setState({
             selected: valid ? [] : selected,
@@ -42,7 +42,7 @@ export class Typeahead extends React.Component {
             valid: true
         });
 
-        this.props.valid(this.props.allItemChoices.find(x => x.ItemName === e.target.innerHTML));
+        this.props.valid(this.props.allItemChoices.find(x => x.productName === e.target.innerHTML));
     }
 
     renderChoices(){
@@ -58,8 +58,8 @@ export class Typeahead extends React.Component {
                         return (
                             <li className="typeahead-dropdown" 
                             onClick={this.listItemClick} 
-                            key={item.ItemName}>
-                                {item.ItemName}
+                            key={item.productName}>
+                                {item.productName}
                             </li>
                         );
                     }

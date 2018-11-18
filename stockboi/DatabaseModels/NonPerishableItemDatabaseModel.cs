@@ -6,8 +6,9 @@ namespace stockboi.DatabaseModels {
     public class NonPerishableItemDatabaseModel {
         [Key]
         [Column("UPC")]
-        public int UPC { get; set; }
+        public string UPC { get; set; }
         public int Units { get; set; }
         public string Description { get; set; }
+        public decimal Price {get; set;}
     }
 }

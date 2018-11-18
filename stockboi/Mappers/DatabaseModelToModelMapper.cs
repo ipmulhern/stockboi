@@ -33,7 +33,7 @@ namespace stockboi.Mappers
             };
         }
 
-        private static double CalculateExpiredItemCount(List<BatchDatabaseModel> batchDatabaseModels, int UPC)
+        private static double CalculateExpiredItemCount(List<BatchDatabaseModel> batchDatabaseModels, string UPC)
         {
             var counts = batchDatabaseModels.Where(x => x.Expiration.CompareTo(DateTime.UtcNow) < 0 && x.UPC == UPC).Select(x => x.Units).ToList();
             var total_count = counts.Sum();

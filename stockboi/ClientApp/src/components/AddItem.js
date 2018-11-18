@@ -53,12 +53,13 @@ export class AddItem extends React.Component {
 
     returnItem(){
         let item = {
-            UPC: this.state.selectedItem.UPC,
-            ItemName: this.state.selectedItem.ItemName,
+            UPC: this.state.selectedItem.upc,
+            ItemName: this.state.selectedItem.productName,
             Expiration: this.state.date,
             DateReceived: new Date(),
-            Weight: 0,
-            Units: 0
+            Weight: 0.0,
+            Units: 0,
+            Damaged: 0.0
         };
 
         item[this.state.amountType] = this.state.amount;
