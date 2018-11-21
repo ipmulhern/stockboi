@@ -1,10 +1,12 @@
 using stockboi.Models;
+using stockboi.DatabaseModels;
 using System.Collections.Generic;
 
 namespace stockboi.Helpers {
     public static class LoggedInUsers{
-        private static Dictionary<string, User> Users = new Dictionary<string, User>();
-        public static void AddUser(User user){
+        private static Dictionary<string, UserInformationDatabaseModel> Users 
+            = new Dictionary<string, UserInformationDatabaseModel>();
+        public static void AddUser(UserInformationDatabaseModel user){
             if (!Users.ContainsKey(user.Username)){
                  Users.Add(user.Username, user);
             }
@@ -14,7 +16,7 @@ namespace stockboi.Helpers {
             Users.Remove(username);
         }
 
-        public static bool UserLoggedIn(User user){
+        public static bool UserLoggedIn(UserInformationDatabaseModel user){
             return Users.ContainsValue(user);
         }
 
@@ -22,7 +24,7 @@ namespace stockboi.Helpers {
             return Users.ContainsKey(username);
         }
 
-        public static User GetUser(string username){
+        public static UserInformationDatabaseModel GetUser(string username){
             return Users[username];
         }
     }

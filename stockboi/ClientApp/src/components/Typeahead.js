@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 export class Typeahead extends React.Component {
     constructor(props){
@@ -16,11 +16,11 @@ export class Typeahead extends React.Component {
     handleTyping(e){
         let selected= this.props.allItemChoices.filter(item => {
             if (e.target.value === "") return false;
-            return item.UPC.toString() === e.target.value ||
-            item.ItemName.toLowerCase().indexOf(e.target.value.toLowerCase()) === 0;
+            return item.upc.toString() === e.target.value ||
+            item.productName.toLowerCase().indexOf(e.target.value.toLowerCase()) === 0;
         });    
         let valid = selected.length === 1 && 
-            e.target.value.toLowerCase() === selected[0].ItemName.toLowerCase();
+            e.target.value.toLowerCase() === selected[0].productName.toLowerCase();
 
         this.setState({
             selected: valid ? [] : selected,
@@ -36,13 +36,13 @@ export class Typeahead extends React.Component {
     }
 
     listItemClick(e){
-        document.getElementById("typeaheadInput").value = e.target.innerHTML;
+        document.getElementById(this.props.id ? this.props.id : "typeaheadInput").value = e.target.innerHTML;
         this.setState({
             selected: [],
             valid: true
         });
 
-        this.props.valid(this.props.allItemChoices.find(x => x.ItemName === e.target.innerHTML));
+        this.props.valid(this.props.allItemChoices.find(x => x.productName === e.target.innerHTML));
     }
 
     renderChoices(){
@@ -58,8 +58,8 @@ export class Typeahead extends React.Component {
                         return (
                             <li className="typeahead-dropdown" 
                             onClick={this.listItemClick} 
-                            key={item.ItemName}>
-                                {item.ItemName}
+                            key={item.productName}>
+                                {item.productName}
                             </li>
                         );
                     }
@@ -72,10 +72,11 @@ export class Typeahead extends React.Component {
         return (
             <div>
                 <input 
-                    id="typeaheadInput"
+                    id={this.props.id ? this.props.id : "typeaheadInput"}
                     onChange={this.handleTyping} 
                     style={{width: "300px", height: "30px", marginTop: "20px"}}
                     placeholder="Enter Item Name or UPC Number"
+                    disabled={this.props.disabled}
                 />
                 {this.renderChoices()}
             </div>

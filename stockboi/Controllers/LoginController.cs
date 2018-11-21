@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using stockboi.Models;
+using stockboi.DatabaseModels;
 using stockboi.RequestModels;
-using System.Security.Principal;
-using System.Security.Claims;
 using stockboi.Helpers;
 using Microsoft.AspNetCore.Http;
 
@@ -15,15 +11,20 @@ namespace stockboi.Controllers
     [Route("api/[controller]")]
     public class LoginController : Controller
     {
-        
+        private readonly DatabaseContext _databaseContext;
+
+        public LoginController(DatabaseContext databaseContext){
+            _databaseContext = databaseContext;
+        }
 
         [HttpPost("[action]")]
         public VerifyUsernameAndPasswordResponse VerifyUsernameAndPassword(
             [FromBody] UsernameAndPasswordRequest request){
-            var valid = request.Username == "stockboi" && request.Password == "stockboi";
+            var users = _databaseContext.UserInformation.Where(x => x.Username ==request.Username).ToList();
+            var valid = users.Count > 0 ? users[0].Password == request.Password : false;
             return new VerifyUsernameAndPasswordResponse{
                 Valid = valid,
-                PermissionLevel = 0
+                PermissionLevel = users.Count > 0 ? users[0].AccessLevel : 2
             };
         }
 
@@ -46,23 +47,23 @@ namespace stockboi.Controllers
         }
 
         [HttpGet("[action]")]
-        public User GetUser() {
+        public UserInformationDatabaseModel GetUser() {
             var username = HttpContext.Session.GetString("Username");
             if (username != null && LoggedInUsers.UserLoggedIn(username)){
                 return LoggedInUsers.GetUser(username);
             }
-            return new User();
+            return new UserInformationDatabaseModel();
         }
 
         private void LoginUser(VerifyPinRequest request){
-            //get user
-            var user = new User();
-            user.Username = request.Username;
-            user.Password = request.Password;
-            user.AccessLevel = 0;
-
-            LoggedInUsers.AddUser(user);
-            HttpContext.Session.SetString("Username", user.Username);
+            var users = _databaseContext.UserInformation.Where(x =>
+                x.Username == request.Username && x.Password == request.Password
+            ).ToList();
+            if (users.Count > 0){
+                var user = users[0];
+                LoggedInUsers.AddUser(user);
+                HttpContext.Session.SetString("Username", user.Username);
+            }   
         }
     }
 }

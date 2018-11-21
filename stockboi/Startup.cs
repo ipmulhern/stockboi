@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using stockboi.DatabaseModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace stockboi
 {
@@ -30,6 +32,7 @@ namespace stockboi
 
             services.AddDistributedMemoryCache();
             services.AddSession();
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer("Server=tcp:stockboi.database.windows.net,1433;Initial Catalog=Stockboi;Persist Security Info=False;User ID=stockman;Password=Ferguson34;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
