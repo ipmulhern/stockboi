@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using stockboi.RequestModels;
 using stockboi.Enums;
 
 namespace stockboi.Controllers
@@ -59,7 +60,6 @@ namespace stockboi.Controllers
             {
                 var dbModels = ItemDescriptionMapper.MapFrom(item);
                 _databaseContext.ProductDescription.Update(dbModels.Item1);
-                _databaseContext.MasterStock.Update(dbModels.Item2);
                 UpdateHeaderTable(item);
                 _databaseContext.SaveChanges();
                 return true;
@@ -71,10 +71,26 @@ namespace stockboi.Controllers
 
         }
 
+        [HttpPost("[action]")]
+        public List<BatchDatabaseModel> GetAllBatches([FromBody]Request request){
+            return _databaseContext.Batch.Where(x => x.UPC == request.Keyword && (x.Weight > 0 || x.Units > 0)).ToList();
+        }
+
+        [HttpPost("[action]")]
+        public bool SaveBatch([FromBody]BatchDatabaseModel batchDB){
+            try{
+                _databaseContext.Batch.Update(batchDB);
+                _databaseContext.SaveChanges();
+                return true;
+            }
+            catch(Exception e){
+                throw(e);
+            }
+        }
+
         private void AddToHeaderTable(ItemDescriptionWithItemType item){
             if (item.ItemType == "Produce"){
                 _databaseContext.Produce.Add(new ProduceDatabaseModel{
-                    Price = item.Price,
                     UPC = item.UPC,
                     Description = item.ProductDescription,
                     Weight = 0
@@ -84,14 +100,12 @@ namespace stockboi.Controllers
                 _databaseContext.PerishableItems.Add(new PerishableItemDatabaseModel{
                     Description = item.ProductDescription,
                     UPC = item.UPC,
-                    Price = item.Price,
                     Units = 0
                 });
             }
             else if (item.ItemType == "NonPerishable"){
                 _databaseContext.NonPerishableItems.Add(new NonPerishableItemDatabaseModel{
                     Units = 0,
-                    Price = item.Price,
                     UPC = item.UPC,
                     Description = item.ProductDescription
                 });
@@ -107,19 +121,16 @@ namespace stockboi.Controllers
             if (perishables.Count > 0)
             {
                 perishables[0].Description = item.ProductDescription;
-                perishables[0].Price = item.Price;
                 _databaseContext.PerishableItems.Update(perishables[0]);
             }
             else if (nonPerishables.Count > 0)
             {
                 nonPerishables[0].Description = item.ProductDescription;
-                nonPerishables[0].Price = item.Price;
                 _databaseContext.NonPerishableItems.Update(nonPerishables[0]);
             }
             else if (produce.Count > 0)
             {
                 produce[0].Description = item.ProductDescription;
-                produce[0].Price = item.Price;
                 _databaseContext.Produce.Update(produce[0]);
             }
         }

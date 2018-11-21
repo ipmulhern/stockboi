@@ -45,7 +45,8 @@ export class EditItem extends React.Component {
         if (this.state.editNameRepeating === nameNotRepeating){
             this.state.editNameRepeating = !nameNotRepeating;
         }
-        return nameNotRepeating && this.state.editName.length > 0 && this.state.valid && this.state.editDescription.length > 0;
+        return nameNotRepeating && this.state.editName.length > 0 && this.state.valid 
+        && this.state.editDescription.length > 0;
     }
 
     onEditCancel(){
@@ -66,12 +67,12 @@ export class EditItem extends React.Component {
                 UPC: this.state.editUPC,
                 ProductDescription: this.state.editDescription,
                 ProductName: this.state.editName,
-                ItemType: this.state.editItemType,
                 ItemID: this.state.itemID
             }
         )
         .then(response => {
             this.setState({savingItem: false, savingItemFailed: false}, this.onEditCancel);
+            this.props.getAllItems();
         })
         .catch(e =>{
             console.log(e);
@@ -105,23 +106,6 @@ export class EditItem extends React.Component {
                                 onChange={(e) => this.setState({editDescription: e.target.value})}
                                 disabled={this.state.savingItem}/>
                         </div>
-                        <div style={{marginLeft: "10px", marginTop: "20px"}}>
-                            <p style={{display: "inline", verticalAlign: "top"}}>Item type: </p>
-                            <select 
-                            onChange={(e) => this.setState({editItemType: e.target.value})}
-                            defaultValue={this.state.editItemType}
-                            disabled={this.state.savingItem}>
-                                <option value="Produce">
-                                    Produce
-                                </option>
-                                <option value="Perishable">
-                                    Perishable
-                                </option>
-                                <option value="NonPerishable">
-                                    Non Perishable
-                                </option>
-                            </select>
-                        </div>
                         <div style={{marginLeft: "75px", width: "300px"}}>
                             <button type="button" className="btn btn-secondary" 
                                 onClick={this.onEditCancel} 
@@ -140,7 +124,7 @@ export class EditItem extends React.Component {
                             <br/>
                             {this.props.renderErrorMessage(false)}
                             {this.state.savingItemFailed &&
-                               <p style={{marginTop: "10px", color: "#c90000"}}>Failed to save order. Please try again.</p>}
+                               <p style={{marginTop: "10px", color: "#c90000"}}>Failed to add item. Please try again.</p>}
                         </div>
                     </div>
                 }

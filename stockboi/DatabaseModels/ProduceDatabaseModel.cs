@@ -11,6 +11,5 @@ namespace stockboi.DatabaseModels {
         public string Description { get; set; }
         [Column("Estimated Expiration")]
         public DateTime EstimatedExpiration { get; set; }
-        public decimal Price {get; set;}
     }
 }

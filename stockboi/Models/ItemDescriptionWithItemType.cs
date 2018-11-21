@@ -7,6 +7,5 @@ namespace stockboi.Models{
         public string ProductDescription { get; set; }
         public string UPC { get; set; }
         public string ItemType { get; set; }
-        public decimal Price { get; set; }
     }
 }

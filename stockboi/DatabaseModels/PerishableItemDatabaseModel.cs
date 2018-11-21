@@ -11,6 +11,5 @@ namespace stockboi.DatabaseModels {
         public int Units { get; set; }
         public string Description { get; set; }
         public DateTime Expiration { get; set; }
-        public decimal Price {get; set;}
     }
 }

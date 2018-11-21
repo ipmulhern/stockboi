@@ -37,8 +37,7 @@ namespace stockboi.Mappers {
                 Weight = batch.Weight,
                 UPC = batch.UPC,
                 Expiration = batch.Expiration,
-                Units = batch.Units,
-                Price = GetPrice(batch, ctx)
+                Units = batch.Units
             };
         }
 
@@ -50,24 +49,6 @@ namespace stockboi.Mappers {
             return batchDBs;
         }
 
-        private static decimal GetPrice(Batch batch, DatabaseContext ctx){
-            var itemType = (ItemType)ctx.MasterStock.Where(x => x.UPC == batch.UPC).ToList()[0].ItemType;
-            decimal price;
-            if(itemType == ItemType.Produce){
-                price = ctx.Produce.Where(x => x.UPC == batch.UPC).ToList()[0].Price;
-            }
-            else if(itemType == ItemType.Perishable){
-                price = ctx.PerishableItems.Where(x => x.UPC == batch.UPC).ToList()[0].Price;
-            }
-            else if (itemType == ItemType.NonPerishable){
-                price = ctx.NonPerishableItems.Where(x => x.UPC == batch.UPC).ToList()[0].Price; 
-            }
-            else{
-                price = 0;
-            }
-
-            return price * (batch.Weight > (double)batch.Units ? (decimal)batch.Weight : (decimal)batch.Units);
-        }
     }
 }
 

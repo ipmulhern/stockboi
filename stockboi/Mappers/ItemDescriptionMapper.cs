@@ -15,14 +15,6 @@ namespace stockboi.Mappers
         {
             var masterStockDB = masterStock.Where(x => x.UPC == productDescription.UPC).ToList()[0];
             var itemType = ((ItemType)masterStockDB.ItemType).ToString("g");
-            decimal price;
-            if (itemType == "Produce")
-                price = ctx.Produce.Where(x => x.UPC == productDescription.UPC).ToList()[0].Price;
-            else if (itemType == "Perishable")
-                price = ctx.PerishableItems.Where(x => x.UPC == productDescription.UPC).ToList()[0].Price;
-            else 
-                price = ctx.NonPerishableItems.Where(x => x.UPC == productDescription.UPC).ToList()[0].Price;
-
 
             return new ItemDescriptionWithItemType
             {
@@ -30,8 +22,7 @@ namespace stockboi.Mappers
                 ProductDescription = productDescription.ProductDescription,
                 UPC = productDescription.UPC,
                 ItemType = itemType,
-                ItemID = masterStockDB.ItemId,
-                Price = price
+                ItemID = masterStockDB.ItemId
             };
         }
 

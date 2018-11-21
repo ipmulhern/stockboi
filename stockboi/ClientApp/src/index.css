@@ -25,6 +25,20 @@
     cursor: pointer;
 }
 
+.past-batches.hover{
+    background-color: #4189C7;
+    color: white;
+}
+
+.past-batches-selected{
+    background-color: #4189C7;
+    color: white;
+}
+
+.past-batches{
+    cursor: pointer;
+}
+
 input.amount{
     height: 30px;
     width: 200px;
