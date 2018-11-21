@@ -1,8 +1,12 @@
+using stockboi.Enums;
+
 namespace stockboi.Models{
     public class User {
-        public int AccessLevel { get; set; }
+        public AccessLevel AccessLevel { get; set; }
         public string Username { get; set; }    
         public string Password { get; set; }    
+        public string Name {get; set;}
+        public int EmployeeId { get; set; }
     }
 
 }
