@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Tabs, Tab } from "react-bootstrap";
 import { AddUser } from './AddUser.js';
+import { EditUser } from './EditUser.js';
 
 export class UserAdmin extends React.Component {
     constructor(props) {
@@ -15,7 +16,7 @@ export class UserAdmin extends React.Component {
         this.getUsers = this.getUsers.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getUsers();
     }
 
@@ -42,6 +43,7 @@ export class UserAdmin extends React.Component {
                             <AddUser allUsers={this.state.allUsers} getUsers={this.getUsers} />
                         </Tab>
                         <Tab eventKey={2} title="Edit User">
+                            <EditUser allUsers={this.state.allUsers} getUsers={this.getUsers} />
                         </Tab>
                         <Tab eventKey={3} title="Remove User">
                         </Tab>

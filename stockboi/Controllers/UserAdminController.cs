@@ -31,6 +31,7 @@ namespace stockboi.Controllers
         {
             try
             {
+                user.EmployeeId = GetEmployeeId();
                 _databaseContext.UserInformation.Add(UserMapper.MapFrom(user));
                 _databaseContext.SaveChanges();
                 return true;
@@ -68,5 +69,8 @@ namespace stockboi.Controllers
             }
         }
 
+        private int GetEmployeeId(){
+            return _databaseContext.UserInformation.Max(x => x.EmployeeId) + 1;
+        }
     }
 }

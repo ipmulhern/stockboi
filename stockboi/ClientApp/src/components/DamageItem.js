@@ -140,6 +140,10 @@ export class DamageItem extends React.Component {
                     <Typeahead key={this.state.typeaheadKey} allItemChoices={this.props.allItems}
                         invalid={() => this.setState({ valid: false })}
                         valid={this.onValid}
+                        defaultText={'Enter item name or UPC.'}
+                        displayProperty={'productName'}
+                        primarySearchProperty={'productName'}
+                        secondarySearchProperty={'upc'}
                     />
                     {this.state.valid && this.renderBatches()}
                 </div>

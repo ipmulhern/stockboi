@@ -88,6 +88,10 @@ export class EditItem extends React.Component {
                         invalid={() => this.setState({valid: false})}
                         valid={this.onValid}
                         disabled={this.state.savingItem}
+                        defaultText={'Enter item name or UPC.'}
+                        displayProperty={'productName'}
+                        primarySearchProperty={'productName'}
+                        secondarySearchProperty={'upc'}
                     />
                 </div>
                 {this.state.valid &&
