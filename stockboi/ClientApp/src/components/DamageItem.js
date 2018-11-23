@@ -124,7 +124,7 @@ export class DamageItem extends React.Component {
                                 style={{ marginTop: "20px", width: "100px", float: "right" }}>
                                 Save
                         </button>
-                        :<p style={{float: "right"}}><em>Loading...</em></p>}
+                        :<p style={{float: "right", marginTop: "10px" }}><em>Loading...</em></p>}
                     </div>
                     :<div></div>}
                      {this.state.savingFailed &&

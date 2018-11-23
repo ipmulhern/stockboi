@@ -249,7 +249,7 @@ export class AddStock extends Component {
           style={{marginTop: "20px", width: "100px", float: "right"}}>
           Save Order
         </button> 
-        :<p><em>Loading...</em></p>}
+        :<p style={{float: "right", marginTop: "10px" }}><em>Loading...</em></p>}
         {this.state.savingOrderFailed &&
         <p style={{marginTop: "10px", color: "#c90000"}}>Failed to save order. Please try again.</p>}
         </div>

@@ -33,6 +33,11 @@ export class NavMenu extends Component {
                 Stock Admin
               </NavItem>
             </LinkContainer>
+            <LinkContainer to={'/UserAdmin'} exact>
+              <NavItem>
+                User Admin
+              </NavItem>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

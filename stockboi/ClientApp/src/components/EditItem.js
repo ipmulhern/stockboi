@@ -120,7 +120,7 @@ export class EditItem extends React.Component {
                                 style={{marginTop: "20px", width: "100px", float: "right"}}>
                                 Save
                             </button>
-                            :<p style={{float: "right"}}><em>Loading...</em></p>}
+                            :<p style={{float: "right", marginTop: "10px" }}><em>Loading...</em></p>}
                             <br/>
                             {this.props.renderErrorMessage(false)}
                             {this.state.savingItemFailed &&
