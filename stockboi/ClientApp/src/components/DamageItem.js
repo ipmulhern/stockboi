@@ -124,7 +124,7 @@ export class DamageItem extends React.Component {
                                 style={{ marginTop: "20px", width: "100px", float: "right" }}>
                                 Save
                         </button>
-                        :<p style={{float: "right"}}><em>Loading...</em></p>}
+                        :<p style={{float: "right", marginTop: "10px" }}><em>Loading...</em></p>}
                     </div>
                     :<div></div>}
                      {this.state.savingFailed &&
@@ -136,10 +136,14 @@ export class DamageItem extends React.Component {
     render() {
         return (
             <div>
-                <div style={{ marginLeft: "78px", width: "300px", height: "30px", marginBottom: "40px" }}>
+                <div style={{ marginLeft: "54px", marginBottom: "40px", width: "324px" }}>
                     <Typeahead key={this.state.typeaheadKey} allItemChoices={this.props.allItems}
                         invalid={() => this.setState({ valid: false })}
                         valid={this.onValid}
+                        defaultText={'Enter item name or UPC.'}
+                        displayProperty={'productName'}
+                        primarySearchProperty={'productName'}
+                        secondarySearchProperty={'upc'}
                     />
                     {this.state.valid && this.renderBatches()}
                 </div>

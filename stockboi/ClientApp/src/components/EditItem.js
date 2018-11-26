@@ -83,16 +83,20 @@ export class EditItem extends React.Component {
     render(){
         return(
             <div>
-                <div style={{marginLeft: "78px", width: "300px", height: "30px", marginBottom: "40px"}}>
+                <div style={{marginLeft: "54px", marginBottom: "40px"}}>
                     <Typeahead id={'EditTypeahead'} key={this.state.typeaheadKey} allItemChoices={this.props.allItems}
                         invalid={() => this.setState({valid: false})}
                         valid={this.onValid}
                         disabled={this.state.savingItem}
+                        defaultText={'Enter item name or UPC.'}
+                        displayProperty={'productName'}
+                        primarySearchProperty={'productName'}
+                        secondarySearchProperty={'upc'}
                     />
                 </div>
                 {this.state.valid &&
                     <div>
-                        <div style={{ marginLeft: "40px"}}>
+                        <div style={{ marginLeft: "36px"}}>
                             <p id="editName" style={{display: "inline", verticalAlign: "top"}}>Name: </p>
                             <input style={{width: "300px", height:"30px", marginBottom: "20px"}}
                                 value={this.state.editName} onChange={(e) => this.setState({editName: e.target.value})}
@@ -120,7 +124,7 @@ export class EditItem extends React.Component {
                                 style={{marginTop: "20px", width: "100px", float: "right"}}>
                                 Save
                             </button>
-                            :<p style={{float: "right"}}><em>Loading...</em></p>}
+                            :<p style={{float: "right", marginTop: "10px" }}><em>Loading...</em></p>}
                             <br/>
                             {this.props.renderErrorMessage(false)}
                             {this.state.savingItemFailed &&

@@ -91,6 +91,10 @@ export class AddItem extends React.Component {
                 <Typeahead allItemChoices={this.props.allItemChoices}
                     invalid={this.onInvalid}
                     valid={this.onValid}
+                    defaultText={'Enter item name or UPC.'}
+                    displayProperty={'productName'}
+                    primarySearchProperty={'productName'}
+                    secondarySearchProperty={'upc'}
                 />
                 {this.state.typeaheadValid? this.renderOtherInfo() : null}
             </div>    

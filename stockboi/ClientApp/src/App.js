@@ -5,6 +5,7 @@ import { CurrentStock } from './components/CurrentStock';
 import { AddStock } from './components/AddStock';
 import { Login } from './components/Login';
 import { StockAdmin } from './components/StockAdmin.js';
+import { UserAdmin } from './components/UserAdmin.js';
 import axios from 'axios';
 
 export default class App extends Component {
@@ -64,6 +65,7 @@ export default class App extends Component {
         <Route exact path='/' component={CurrentStock} />
         <Route exact path='/Orders' component={AddStock} />
         <Route exact path='/StockAdmin' component={StockAdmin} />
+        <Route exact path='/UserAdmin' component={UserAdmin} />
       </Layout>
       :<Login setLoggedIn={this.setLoggedIn} setPermissionLevel={this.setPermissionLevel}/>
     );

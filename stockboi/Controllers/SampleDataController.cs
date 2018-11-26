@@ -21,20 +21,6 @@ namespace stockboi.Controllers
             _databaseContext = databaseContext;
         }
 
-        [HttpGet("[action]")]
-        public List<PerishableItem> GetPerishableItems()
-        {
-            if (!LoggedInUsers.UserLoggedIn(HttpContext.Session.GetString("Username"))){
-                return new List<PerishableItem>();
-           }
-
-            var perishableItemDatabaseModels = _databaseContext.PerishableItems.ToList();
-            var productDescriptionDatabaseModels = _databaseContext.ProductDescription.ToList();
-            var batchDatabaseModels = _databaseContext.Batch.ToList();
-            var perishableItems = DatabaseModelToModelMapper.MapFrom(perishableItemDatabaseModels, productDescriptionDatabaseModels, batchDatabaseModels);
-            return perishableItems;
-        }
-
         [HttpPost("[action]")]
         public PagingResponse<Batch> GetAllItems([FromBody] PagingRequest request){
             var itemDescriptions = _databaseContext.ProductDescription.ToList();
