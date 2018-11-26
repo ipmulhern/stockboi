@@ -4,13 +4,13 @@ import { NavMenu } from './NavMenu';
 
 export class Layout extends Component {
   displayName = Layout.name
-
+  
   render() {
     return (
       <Grid fluid>
         <Row>
           <Col sm={3}>
-            <NavMenu />
+            <NavMenu permissionLevel={this.props.permissionLevel}/>
           </Col>
           <Col sm={8}>
             {this.props.children}

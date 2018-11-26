@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using stockboi.RequestModels;
 using stockboi.Enums;
+using stockboi.Helpers;
 
 namespace stockboi.Controllers
 {
@@ -23,12 +24,18 @@ namespace stockboi.Controllers
 
         [HttpGet("[action]")]
         public List<User> GetAllUsers(){
+            if (!PermissionHelper.IsAtLeastManager(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             return  UserMapper.MapTo(_databaseContext.UserInformation.ToList());
         }
 
         [HttpPost("[action]")]
         public bool AddUser([FromBody] User user)
         {
+            if (!PermissionHelper.IsAtLeastManager(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             try
             {
                 user.EmployeeId = GetEmployeeId();
@@ -44,6 +51,9 @@ namespace stockboi.Controllers
         [HttpPost("[action]")]
         public bool SaveUser([FromBody] User user)
         {
+            if (!PermissionHelper.IsAtLeastManager(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             try
             {
                 _databaseContext.UserInformation.Update(UserMapper.MapFrom(user));
@@ -58,6 +68,9 @@ namespace stockboi.Controllers
         [HttpPost("[action]")]
         public bool RemoveUser([FromBody] User user)
         {
+            if (!PermissionHelper.IsAtLeastManager(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             try
             {
                 _databaseContext.UserInformation.Remove(UserMapper.MapFrom(user));

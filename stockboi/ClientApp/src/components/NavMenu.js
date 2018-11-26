@@ -3,9 +3,13 @@ import { Link } from 'react-router-dom';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import './NavMenu.css';
+import { AccessLevel } from '../Enums/AccessLevel.js';
 
 export class NavMenu extends Component {
   displayName = NavMenu.name
+  constructor(props){
+    super(props);
+  }
 
   render() {
     return (
@@ -28,16 +32,20 @@ export class NavMenu extends Component {
                 Orders
               </NavItem>
             </LinkContainer>
-            <LinkContainer to={'/StockAdmin'} exact>
+            {(AccessLevel[this.props.permissionLevel] === 'Manager' 
+            || AccessLevel[this.props.permissionLevel] === 'Admin')
+            &&<LinkContainer to={'/StockAdmin'} exact>
               <NavItem>
                 Stock Admin
               </NavItem>
-            </LinkContainer>
-            <LinkContainer to={'/UserAdmin'} exact>
+            </LinkContainer>}
+            {(AccessLevel[this.props.permissionLevel] === 'Manager' 
+            || AccessLevel[this.props.permissionLevel] === 'Admin')
+            &&<LinkContainer to={'/UserAdmin'} exact>
               <NavItem>
                 User Admin
               </NavItem>
-            </LinkContainer>
+            </LinkContainer>}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

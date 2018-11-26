@@ -27,6 +27,9 @@ namespace stockboi.Controllers
         [HttpPost("[action]")]
         public PagingResponse<Order> GetPastOrders([FromBody] PagingRequest request)
         {
+            if (!PermissionHelper.IsAtLeastEmployee(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             var ordersDb = _databaseContext.PastOrders.ToList();
             var batches = _databaseContext.Batch.ToList();
             var orders = new List<Order>();
@@ -60,6 +63,9 @@ namespace stockboi.Controllers
         [HttpPost("[action]")]
         public bool SaveOrder([FromBody] List<Batch> Order)
         {
+            if (!PermissionHelper.IsAtLeastEmployee(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             try
             {
                 _databaseContext.Batch.AddRange(BatchMapper.MapFrom(Order, _databaseContext));
@@ -76,6 +82,9 @@ namespace stockboi.Controllers
         [HttpGet("[action]")]
         public List<ProductDescriptionDatabaseModel> GetAllProductDescriptions()
         {
+            if (!PermissionHelper.IsAtLeastEmployee(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             return _databaseContext.ProductDescription.ToList();
         }
 

@@ -28,7 +28,7 @@ export default class App extends Component {
         if (response.data.username){
           this.setState({
             loggedIn: true,
-            permissionLevel: response.data.permissionLevel
+            permissionLevel: response.data.accessLevel
           });
         }
       });
@@ -59,9 +59,10 @@ export default class App extends Component {
   }
 
   render() {
+    console.log(this.state.permissionLevel);
     return (
       this.state.loggedIn 
-      ?<Layout logout={this.logout}>
+      ?<Layout logout={this.logout} permissionLevel={this.state.permissionLevel}>
         <Route exact path='/' component={CurrentStock} />
         <Route exact path='/Orders' component={AddStock} />
         <Route exact path='/StockAdmin' component={StockAdmin} />
