@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using stockboi.RequestModels;
 using stockboi.Enums;
+using stockboi.Helpers;
 
 namespace stockboi.Controllers
 {
@@ -25,6 +26,9 @@ namespace stockboi.Controllers
         [HttpGet("[action]")]
         public List<ItemDescriptionWithItemType> GetAllItems()
         {
+            if (!PermissionHelper.IsAtLeastManager(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             var productDescriptions = _databaseContext.ProductDescription.ToList();
             var masterStock = _databaseContext.MasterStock.ToList();
             return ItemDescriptionMapper.MapTo(productDescriptions, masterStock, _databaseContext);
@@ -33,6 +37,9 @@ namespace stockboi.Controllers
         [HttpPost("[action]")]
         public bool AddItem([FromBody] ItemDescriptionWithItemType item)
         {
+            if (!PermissionHelper.IsAtLeastManager(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             try
             {
                 var dbModels = ItemDescriptionMapper.MapFrom(item);
@@ -56,6 +63,9 @@ namespace stockboi.Controllers
         [HttpPost("[action]")]
         public bool EditItem([FromBody] ItemDescriptionWithItemType item)
         {
+            if (!PermissionHelper.IsAtLeastManager(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             try
             {
                 var dbModels = ItemDescriptionMapper.MapFrom(item);
@@ -73,11 +83,17 @@ namespace stockboi.Controllers
 
         [HttpPost("[action]")]
         public List<BatchDatabaseModel> GetAllBatches([FromBody]Request request){
+            if (!PermissionHelper.IsAtLeastManager(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             return _databaseContext.Batch.Where(x => x.UPC == request.Keyword && (x.Weight > 0 || x.Units > 0)).ToList();
         }
 
         [HttpPost("[action]")]
         public bool SaveBatch([FromBody]BatchDatabaseModel batchDB){
+            if (!PermissionHelper.IsAtLeastManager(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             try{
                 _databaseContext.Batch.Update(batchDB);
                 _databaseContext.SaveChanges();

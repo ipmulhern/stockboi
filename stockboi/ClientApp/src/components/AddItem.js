@@ -87,7 +87,7 @@ export class AddItem extends React.Component {
 
     render(){
         return(
-            <div style={{width: "300px", marginLeft: "auto", marginRight: "auto"}}>
+            <div style={{width: "324px", marginLeft: "auto", marginRight: "auto"}}>
                 <Typeahead allItemChoices={this.props.allItemChoices}
                     invalid={this.onInvalid}
                     valid={this.onValid}

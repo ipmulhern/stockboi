@@ -23,6 +23,9 @@ namespace stockboi.Controllers
 
         [HttpPost("[action]")]
         public PagingResponse<Batch> GetAllItems([FromBody] PagingRequest request){
+            if (!PermissionHelper.IsAtLeastEmployee(HttpContext)){
+                throw(new UnauthorizedAccessException());
+            }
             var itemDescriptions = _databaseContext.ProductDescription.ToList();
             var batchDatabaseModels = _databaseContext.Batch.ToList();
             var batches = BatchMapper.MapTo(batchDatabaseModels, itemDescriptions);
