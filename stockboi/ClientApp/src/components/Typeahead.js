@@ -46,8 +46,8 @@ export class Typeahead extends React.Component {
             selected: [],
             valid: true
         });
-
-        this.props.valid(this.props.allItemChoices.find(x => x[this.props.displayProperty] === e.target.innerHTML));
+        let tokens = e.target.innerHTML.split('&amp;') 
+        this.props.valid(this.props.allItemChoices.find(x => x[this.props.displayProperty] === tokens.join('&')));
     }
 
     renderChoices() {

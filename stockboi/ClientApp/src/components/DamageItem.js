@@ -136,7 +136,7 @@ export class DamageItem extends React.Component {
     render() {
         return (
             <div>
-                <div style={{ marginLeft: "78px", width: "300px", height: "30px", marginBottom: "40px" }}>
+                <div style={{ marginLeft: "54px", marginBottom: "40px", width: "324px" }}>
                     <Typeahead key={this.state.typeaheadKey} allItemChoices={this.props.allItems}
                         invalid={() => this.setState({ valid: false })}
                         valid={this.onValid}

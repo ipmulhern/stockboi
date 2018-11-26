@@ -45,7 +45,6 @@ input.amount{
 }
 
 li.typeahead-dropdown {
-    height: 40px;
     border-top-color: gray;
     padding: 10px;
     border-top-style: solid;

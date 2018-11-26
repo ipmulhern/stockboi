@@ -83,7 +83,7 @@ export class EditItem extends React.Component {
     render(){
         return(
             <div>
-                <div style={{marginLeft: "78px", width: "300px", height: "30px", marginBottom: "40px"}}>
+                <div style={{marginLeft: "54px", marginBottom: "40px"}}>
                     <Typeahead id={'EditTypeahead'} key={this.state.typeaheadKey} allItemChoices={this.props.allItems}
                         invalid={() => this.setState({valid: false})}
                         valid={this.onValid}
@@ -96,7 +96,7 @@ export class EditItem extends React.Component {
                 </div>
                 {this.state.valid &&
                     <div>
-                        <div style={{ marginLeft: "40px"}}>
+                        <div style={{ marginLeft: "36px"}}>
                             <p id="editName" style={{display: "inline", verticalAlign: "top"}}>Name: </p>
                             <input style={{width: "300px", height:"30px", marginBottom: "20px"}}
                                 value={this.state.editName} onChange={(e) => this.setState({editName: e.target.value})}

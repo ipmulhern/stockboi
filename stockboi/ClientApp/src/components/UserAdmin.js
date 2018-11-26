@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Tabs, Tab } from "react-bootstrap";
 import { AddUser } from './AddUser.js';
 import { EditUser } from './EditUser.js';
+import { RemoveUser } from './RemoveUser.js';
 
 export class UserAdmin extends React.Component {
     constructor(props) {
@@ -46,6 +47,7 @@ export class UserAdmin extends React.Component {
                             <EditUser allUsers={this.state.allUsers} getUsers={this.getUsers} />
                         </Tab>
                         <Tab eventKey={3} title="Remove User">
+                            <RemoveUser allUsers={this.state.allUsers} getUsers={this.getUsers} />
                         </Tab>
                     </Tabs>
                 </div>
