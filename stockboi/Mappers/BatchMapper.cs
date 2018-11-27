@@ -1,6 +1,8 @@
 using stockboi.DatabaseModels;
 using stockboi.Models;
 using System.Collections.Generic;
+using stockboi.Enums;
+using System.Linq;
 
 namespace stockboi.Mappers {
     public static class BatchMapper {
@@ -27,6 +29,26 @@ namespace stockboi.Mappers {
             }
             return batches;
         }
+
+        public static BatchDatabaseModel MapFrom(Batch batch, DatabaseContext ctx){
+            return new BatchDatabaseModel{
+                Damaged = batch.Damaged,
+                DateReceived = batch.DateReceived,
+                Weight = batch.Weight,
+                UPC = batch.UPC,
+                Expiration = batch.Expiration,
+                Units = batch.Units
+            };
+        }
+
+        public static List<BatchDatabaseModel> MapFrom(List<Batch> batches, DatabaseContext ctx){
+            var batchDBs = new List<BatchDatabaseModel>();
+            foreach( var batch in batches){
+                batchDBs.Add(MapFrom(batch, ctx));
+            }
+            return batchDBs;
+        }
+
     }
 }
 

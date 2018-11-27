@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {formatDate} from '../helpers/DateFormatHelper.js';
 import axios from 'axios';
+import {PageSelector} from './PageSelector.js';
 
 export class CurrentStock extends Component {
   displayName = CurrentStock.name
@@ -11,75 +12,84 @@ export class CurrentStock extends Component {
       foodItems: [], 
       loading: true, 
       searchText: "",
-      sortButtonStyles: {},
-      numberOfPages: 0
+      sortButtonStyles: {
+        ItemName: {cursor: "pointer", color: "black"},
+        Count: {cursor: "pointer", color: "grey"},
+        Damaged: {cursor: "pointer", color: "grey"},
+        DateReceived: {cursor: "pointer", color: "grey"},
+        Expiration: {cursor: "pointer", color: "grey"}
+      },
+      numberOfPages: 0,
+      page: 1,
+      sortBy: ""
     };
 
-    axios.post('api/PerishableItem/GetAllItems', {
-      NumberOfItemsPerPage: 50,
-      PageSelected: 1,
-      SortBy: "ItemName"
-    })
-      .then(response => {
-        this.setState({ loading: false, foodItems: response.data.data, numberOfPages: response.data.numberOfPages });
-      });
+    this.getItems(1, "ItemName");
 
+    this.getItems = this.getItems.bind(this);
     this.renderStockTable = this.renderStockTable.bind(this);   
   }
 
-  sortItems(list, sortType){ 
-    var compare = (a, b) => {
-      if (a[sortType] > b[sortType]){
-        return 1;
-      }
-      if (a[sortType] < b[sortType]){
-        return -1;
-      }
-      return 0;
-    };
+  getItems(page, sortBy){
+    this.getSortButtonStyles(sortBy);
+    axios.post('api/PerishableItem/GetAllItems', {
+      NumberOfItemsPerPage: 50,
+      PageSelected: page,
+      SortBy: sortBy
+    })
+      .then(response => {
+        this.setState({ loading: false, foodItems: response.data.data, numberOfPages: response.data.numberOfPages});
+      });
+  }
 
+  getSortButtonStyles(sortBy){
     let sortButtonStyles = {
-      name: {cursor: "pointer", color: "dimGrey"},
-      count: {cursor: "pointer", color: "dimGrey"},
-      damaged: {cursor: "pointer", color: "dimGrey"}
+      ItemName: {cursor: "pointer", color: "grey"},
+      Count: {cursor: "pointer", color: "grey"},
+      Damaged: {cursor: "pointer", color: "grey"},
+      DateReceived: {cursor: "pointer", color: "grey"},
+      Expiration: {cursor: "pointer", color: "grey"}
     };
-    sortButtonStyles[sortType].color = "black";
-
-    this.setState ({
-      foodItems: list.sort(compare),
-      sortBy: sortType,
+    sortButtonStyles[sortBy].color = "black";
+    this.setState({
+      sortBy: sortBy,
       sortButtonStyles: sortButtonStyles
     });
   }
 
+  changePage(page, canChange=true){
+    if(page !== this.state.page && canChange){
+      this.setState({
+        page: page,
+        loading: true
+      }, this.getItems(page, this.state.sorBy));
+    }
+  }
+
   renderStockTable(foodItems) {
-    console.log(foodItems);
     return (
       <div>
-      <input
-            onKeyUp = {() => this.setState({searchText: document.getElementsByTagName('input')[0].value})}
-        />
       <table className='table'>
         <thead>
           <tr>
-            <th onClick={() => this.sortItems(this.state.foodItems, "name")}
-            style={this.state.sortButtonStyles.name}>
+            <th onClick={() => this.setState({loading: true}, this.getItems(this.state.page, "ItemName"))}
+            style={this.state.sortButtonStyles.ItemName}>
               Item Name
             </th>
-            <th onClick={() => this.sortItems(this.state.foodItems, "count")}
-            style={this.state.sortButtonStyles.count}>
+            <th onClick={() => this.setState({loading: true}, this.getItems(this.state.page, "Count"))}
+            style={this.state.sortButtonStyles.Count}>
               Current Stock
             </th>
-            <th onClick={() => this.sortItems(this.state.foodItems, "damaged")} 
-            style={this.state.sortButtonStyles.damaged}>
+            <th onClick={() => this.setState({loading: true}, this.getItems(this.state.page, "Damaged"))} 
+            style={this.state.sortButtonStyles.Damaged}>
               Amount Damaged
             </th>
-            <th 
-            style={this.state.sortButtonStyles.damaged}>
+            <th onClick={() => this.setState({loading: true}, this.getItems(this.state.page, "DateReceived"))}  
+            style={this.state.sortButtonStyles.DateReceived}>
               Date Received
             </th>
-            <th 
-            style={this.state.sortButtonStyles.damaged}>
+            <th onClick={() => this.setState({loading: true}, this.getItems(this.state.page, "Expiration"))}  
+            style={this.state.sortButtonStyles.Expiration}>
               Expires
             </th>
           </tr>
@@ -97,6 +107,9 @@ export class CurrentStock extends Component {
           )}
         </tbody>
       </table>
+      <div>
+        {this.state.numberOfPages > 1 && PageSelector(this.state.page, this.state.numberOfPages, this.changePage)}
+      </div>
       </div>
     );
   }

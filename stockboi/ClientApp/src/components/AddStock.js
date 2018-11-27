@@ -4,15 +4,8 @@ import {objectSearch} from '../helpers/ObjectSearcher.js';
 import {Tabs, Tab} from "react-bootstrap";
 import {Modal} from 'react-bootstrap';
 import {AddItem} from './AddItem.js';
-
-const testItems = [
-  {ItemName: "Milk Gallons", UPC: 1254},
-  {ItemName: "Apples", UPC: 5432},
-  {ItemName: "Lays Potato Chips", UPC: 2452},
-  {ItemName: "Mangos", UPC: 5436}
-];
-
-
+import axios from 'axios';
+import {PageSelector} from './PageSelector.js';
 
 export class AddStock extends Component {
   displayName = "Add New Order"
@@ -21,15 +14,20 @@ export class AddStock extends Component {
     super(props);
     this.state = {
       searchText: "",
-      orders: [
-        {OrderNumber: 3, Description: "10 milk gallons, 10 Lbs of apples, 500 lays potato chips", Date: "10/25/18"},
-        {OrderNumber: 2, Description: "10 milk gallons, 10 Lbs of apples, 500 lays potato chips", Date: "10/25/18"},
-        {OrderNumber: 1, Description: "10 milk gallons, 10 Lbs of apples, 500 lays potato chips", Date: "10/25/18"}
-      ],
+      orders: [],
       newOrder: [],
       show: false,
-      currentBatch: {} 
+      currentBatch: {},
+      page: 1,
+      loadingOrders: true,
+      numberOfPages: null,
+      savingOrder: false,
+      savingOrderFailed: false,
+      allItemChoices: []
     };
+
+    this.getPastOrders(1);
+    this.getItemDescriptions();
 
     this.handlePastOrderSearch = this.handlePastOrderSearch.bind(this);
     this.handleAddItemClick = this. handleAddItemClick.bind(this);
@@ -39,20 +37,49 @@ export class AddStock extends Component {
     this.handleAddBatchToOrder = this.handleAddBatchToOrder.bind(this);
     this.removeBatchFromOrder = this.removeBatchFromOrder.bind(this);
     this.handleSaveOrderClick = this.handleSaveOrderClick.bind(this);
+    this.getPastOrders = this.getPastOrders.bind(this);
+    this.changePage = this.changePage.bind(this);
+    this.saveOrder = this.saveOrder.bind(this);
+    this.getItemDescriptions = this.getItemDescriptions.bind(this);
   }
 
-handlePastOrderSearch(e){
-  this.setState({
-    searchText: e.target.value
-  });
-}
+  handlePastOrderSearch(e){
+    this.setState({
+      searchText: e.target.value
+    });
+  }
+
+  getPastOrders(page){
+    axios.post('api/Orders/GetPastOrders', {
+      NumberOfItemsPerPage: 50,
+      PageSelected: page,
+      SortBy: ""
+    })
+    .then(response => {
+      this.setState({
+        orders: response.data.data,
+        numberOfPages: response.data.NumberOfPages,
+        loadingOrders: false
+      });
+    });
+  }
+
+  changePage(page){
+    if (page != this.state.page){
+      this.setState({
+        page: page,
+        loadingOrders: true,
+      }, this.getPastOrders(page));
+    }
+  }
 
   renderPastOrders(){
     return(
       <div>
-        <input onChange={this.handlePastOrderSearch} style={{width: "300px", height: "30px", marginTop: "20px"}}/>
         <div style={{width: "100%", marginTop: "20px"}}>
-          <table className='table'>
+        {this.state.loadingOrders 
+          ? <p><em>Loading...</em></p>
+          : <table className='table'>
             <thead>
             <tr>
               <th>
@@ -67,15 +94,16 @@ handlePastOrderSearch(e){
             </tr>
           </thead>
           <tbody>
-            {objectSearch(this.state.orders, this.state.searchText).map((order) =>
+            {this.state.orders.map((order) =>
             <tr className="past-orders" key={order.OrderNumber}>
-              <td>{"Order #" + order.OrderNumber}</td>
-              <td>{order.Description}</td>
-              <td>{order.Date}</td>
+              <td>{"Order #" + order.orderNumber}</td>
+              <td>{order.description}</td>
+              <td>{formatDate(order.datePlaced.toString())}</td>
             </tr>
             )}
           </tbody>
-         </table> 
+          </table> }
+         {this.state.numberOfPages > 1 && PageSelector(this.state.page, this.state.numberOfPages, this.changePage)}
         </div>
       </div>
     );
@@ -115,19 +143,49 @@ handlePastOrderSearch(e){
   }
 
   removeBatchFromOrder(batchToRemove){
-    let newOrder = this.state.newOrder.filter(batch => {
-      return batch !== batchToRemove;
-    });
+    if (this.state.savingOrder){
+      let newOrder = this.state.newOrder.filter(batch => {
+        return batch !== batchToRemove;
+      });
 
-    this.setState({
-      newOrder: newOrder
-    });
+      this.setState({
+        newOrder: newOrder
+      });
+    }
   }
 
   handleSaveOrderClick(){
     this.setState({
-      newOrder: []
-    });
+      savingOrder: true
+    }, this.saveOrder());
+  }
+
+  saveOrder(){
+    axios.post('api/Orders/SaveOrder', this.state.newOrder)
+      .then(response => {
+        this.setState({
+          savingOrder: false,
+          savingOrderFailed: false,
+          newOrder: [],
+          loadingOrders: true
+        }, this.getPastOrders(1));
+      })
+      .catch(e => {
+        console.log(e);
+        this.setState({
+          savingOrder: false,
+          savingOrderFailed: true
+        });
+      });
+  }
+
+  getItemDescriptions(){
+    axios.get('api/Orders/GetAllProductDescriptions')
+      .then(response => {
+        this.setState({
+          allItemChoices: response.data
+        });
+      });
   }
 
   renderNewOrder(){
@@ -135,6 +193,7 @@ handlePastOrderSearch(e){
       <div>
         <button type="button" className="btn btn-secondary" 
           onClick={this.handleAddItemClick} 
+          disabled={this.state.savingOrder}
           style={{marginTop: "20px", width: "100px"}}>
           Add Item
         </button>
@@ -145,7 +204,7 @@ handlePastOrderSearch(e){
           <Modal.Body>
             <AddItem key={this.state.addItemKey} 
               newItem={this.makeChangesToBatch} 
-              allItemChoices={testItems}/>
+              allItemChoices={this.state.allItemChoices}/>
           </Modal.Body>
           <Modal.Footer>
             <button type="button" className="btn btn-secondary"
@@ -184,11 +243,15 @@ handlePastOrderSearch(e){
             )}
           </tbody>
          </table>
-         <button type="button" className="btn btn-secondary" 
+         {!this.state.savingOrder
+         ?<button type="button" className="btn btn-secondary" 
           onClick={this.handleSaveOrderClick} 
           style={{marginTop: "20px", width: "100px", float: "right"}}>
           Save Order
         </button> 
+        :<p style={{float: "right", marginTop: "10px" }}><em>Loading...</em></p>}
+        {this.state.savingOrderFailed &&
+        <p style={{marginTop: "10px", color: "#c90000"}}>Failed to save order. Please try again.</p>}
         </div>
       </div>
     );

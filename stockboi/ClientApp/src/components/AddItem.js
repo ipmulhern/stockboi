@@ -53,12 +53,13 @@ export class AddItem extends React.Component {
 
     returnItem(){
         let item = {
-            UPC: this.state.selectedItem.UPC,
-            ItemName: this.state.selectedItem.ItemName,
+            UPC: this.state.selectedItem.upc,
+            ItemName: this.state.selectedItem.productName,
             Expiration: this.state.date,
             DateReceived: new Date(),
-            Weight: 0,
-            Units: 0
+            Weight: 0.0,
+            Units: 0,
+            Damaged: 0.0
         };
 
         item[this.state.amountType] = this.state.amount;
@@ -86,10 +87,14 @@ export class AddItem extends React.Component {
 
     render(){
         return(
-            <div style={{width: "300px", marginLeft: "auto", marginRight: "auto"}}>
+            <div style={{width: "324px", marginLeft: "auto", marginRight: "auto"}}>
                 <Typeahead allItemChoices={this.props.allItemChoices}
                     invalid={this.onInvalid}
                     valid={this.onValid}
+                    defaultText={'Enter item name or UPC.'}
+                    displayProperty={'productName'}
+                    primarySearchProperty={'productName'}
+                    secondarySearchProperty={'upc'}
                 />
                 {this.state.typeaheadValid? this.renderOtherInfo() : null}
             </div>    

@@ -25,13 +25,26 @@
     cursor: pointer;
 }
 
+.past-batches.hover{
+    background-color: #4189C7;
+    color: white;
+}
+
+.past-batches-selected{
+    background-color: #4189C7;
+    color: white;
+}
+
+.past-batches{
+    cursor: pointer;
+}
+
 input.amount{
     height: 30px;
     width: 200px;
 }
 
 li.typeahead-dropdown {
-    height: 40px;
     border-top-color: gray;
     padding: 10px;
     border-top-style: solid;
@@ -41,6 +54,8 @@ li.typeahead-dropdown {
 ul.typeahead-dropdown {
     list-style: none;
     padding: 0px;
+    width: 300px;
+    margin-left: 24px;
 }
 
 .typeahead-shadow {
@@ -78,6 +93,75 @@ select.amount{
     -moz-box-shadow: inset 0px 0px 36px -12px rgba(0,0,0,0.29);
     box-shadow: inset 0px 0px 36px -12px rgba(0,0,0,0.29);
     margin-top: 20px;
+}
+
+.table-pagination > * {display: inline-block}
+
+.pagingDetails {padding-top: 1em;}
+
+.pageSelector > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+
+}
+.pageSelector > ul li {
+    display: inline-block;
+    cursor: pointer;
+    margin: 0 .1em;
+}
+
+.pageSelector > ul li.controlActive-false {
+    color: lightgray;
+    cursor: default;
+}
+
+.page-link-container {
+    margin: 0 .2em;
+    list-style-type: none;
+    padding: 0;
+}
+
+.page-link-container li {
+    display: inline-block;
+    padding: 0 .5em;
+    border-bottom: solid 2px transparent;
+}
+
+.page-link-container .pageNumber.currentPage-true {
+    border-color: #4CA8CC;
+    color: #4CA8CC;
+    font-weight: 500;
+}
+
+.pageSizeSelectWrapper {
+    display: inline-block;
+    margin-left: 1.2em;
+}
+
+.pageSizeSelect {
+    margin-right: .5em;
+}
+
+.pagingItemInformation {
+    float: right;
+}
+
+.page-jump {
+    margin: 0 .3em !important;
+}
+
+.pageSelector .fa {
+    font-size: 1em;
+}
+
+.pageSelector .fa-backward {
+    margin-right: .3em;
+}
+
+.pageSelector .fa-forward {
+    margin-left: .3em;
 }
 
 @media (max-width: 767px) {

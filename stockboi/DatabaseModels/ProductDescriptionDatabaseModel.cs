@@ -7,7 +7,7 @@ namespace stockboi.DatabaseModels {
     public class ProductDescriptionDatabaseModel {
         [Key]
         [Column("UPC")]
-        public int UPC { get; set; }
+        public string UPC { get; set; }
         [Column("Product_Description")]
         public string ProductDescription { get; set; }
         [Column("Product_Name")]

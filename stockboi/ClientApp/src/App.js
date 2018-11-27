@@ -5,6 +5,7 @@ import { CurrentStock } from './components/CurrentStock';
 import { AddStock } from './components/AddStock';
 import { Login } from './components/Login';
 import { StockAdmin } from './components/StockAdmin.js';
+import { UserAdmin } from './components/UserAdmin.js';
 import axios from 'axios';
 
 export default class App extends Component {
@@ -27,7 +28,7 @@ export default class App extends Component {
         if (response.data.username){
           this.setState({
             loggedIn: true,
-            permissionLevel: response.data.permissionLevel
+            permissionLevel: response.data.accessLevel
           });
         }
       });
@@ -58,12 +59,14 @@ export default class App extends Component {
   }
 
   render() {
+    console.log(this.state.permissionLevel);
     return (
       this.state.loggedIn 
-      ?<Layout logout={this.logout}>
+      ?<Layout logout={this.logout} permissionLevel={this.state.permissionLevel}>
         <Route exact path='/' component={CurrentStock} />
         <Route exact path='/Orders' component={AddStock} />
         <Route exact path='/StockAdmin' component={StockAdmin} />
+        <Route exact path='/UserAdmin' component={UserAdmin} />
       </Layout>
       :<Login setLoggedIn={this.setLoggedIn} setPermissionLevel={this.setPermissionLevel}/>
     );

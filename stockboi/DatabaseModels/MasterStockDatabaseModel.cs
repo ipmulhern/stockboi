@@ -9,7 +9,7 @@ namespace stockboi.DatabaseModels {
         [Column("itemId")]
         public int ItemId { get; set; }
         [Column("UPC")]
-        public int UPC { get; set; }
+        public string UPC { get; set; }
         [Column("Item_Type")]
         public int ItemType { get; set; }
     }
