@@ -13,6 +13,6 @@ namespace stockboi.DatabaseModels {
         public string Name { get; set; }
         [Column("Employee ID Number")]
         public int EmployeeId { get; set; }
-        //public int AuthyId {get;set;}
+        public int AuthyId {get;set;}
     }
 }

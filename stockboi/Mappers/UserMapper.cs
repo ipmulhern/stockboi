@@ -23,6 +23,12 @@ namespace stockboi.Mappers{
             return users;
         }
 
+        public static UserInformationDatabaseModel MapFrom(User user, UserRegistrationResponse userRegistration) {
+            var userInfo = MapFrom(user);
+            
+            return userInfo;
+        }
+
         public static UserInformationDatabaseModel MapFrom(User user){
             return new UserInformationDatabaseModel{
                 AccessLevel = (int)user.AccessLevel,

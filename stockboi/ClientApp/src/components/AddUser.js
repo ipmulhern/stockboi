@@ -12,7 +12,9 @@ export class AddUser extends React.Component {
             name: "",
             accessLevel: "Employee",
             addingUser: false,
-            addingUserFailed: false
+            addingUserFailed: false,
+            phoneNumber: "",
+            email: ""
         };
 
         this.addUser = this.addUser.bind(this);
@@ -24,7 +26,9 @@ export class AddUser extends React.Component {
         this.setState({
             username: "",
             password: "",
-            name: ""
+            name: "",
+            phoneNumber: "",
+            email: ""
         });
     }
 
@@ -34,7 +38,9 @@ export class AddUser extends React.Component {
             Username: this.state.username,
             Password: this.state.password,
             Name: this.state.name,
-            AccessLevel: AccessLevel[this.state.accessLevel]
+            AccessLevel: AccessLevel[this.state.accessLevel],
+            Email: this.state.email,
+            PhoneNumber: this.state.phoneNumber
         })
         .then(response => {
             if (response.data){
@@ -74,6 +80,19 @@ export class AddUser extends React.Component {
                     <input style={{ width: "300px", height: "30px" }} value={this.state.password}
                         onChange={(e) => this.setState({ password: e.target.value })}
                         disabled={this.state.addingUser} />
+                </div>
+                <div style={{ marginLeft: "44px", marginTop: "20px" }}>
+                    <p style={{ display: "inline", verticalAlign: "top" }}>Email: </p>
+                    <input style={{ width: "300px", height: "30px", marginBottom: "20px" }}
+                        value={this.state.email} onChange={(e) => this.setState({ email: e.target.value })}
+                        disabled={this.state.addingUser} />
+                </div>
+                <div style={{ marginLeft: "44px", marginTop: "20px" }}>
+                    <p style={{ display: "inline", verticalAlign: "top" }}>Phone: </p>
+                    <input style={{ width: "300px", height: "30px", marginBottom: "20px" }}
+                        value={this.state.phoneNumber} type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" onChange={(e) => this.setState({ phoneNumber: e.target.value })}
+                        disabled={this.state.addingUser} />
+                    <span style={{marginLeft: "20px"}}>Format: 123-456-7890</span>
                 </div>
                 <div style={{marginTop: "20px" }}>
                     <p style={{ display: "inline", verticalAlign: "top" }}>Access Level: </p>

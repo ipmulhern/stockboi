@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System;
 using stockboi.RequestModels;
 using stockboi.Enums;
@@ -16,10 +18,12 @@ namespace stockboi.Controllers
     public class UserAdminController : Controller
     {
         private readonly DatabaseContext _databaseContext;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public UserAdminController(DatabaseContext ctx)
+        public UserAdminController(DatabaseContext ctx, IHttpClientFactory httpClientFactory)
         {
             _databaseContext = ctx;
+            _clientFactory = httpClientFactory;
         }
 
         [HttpGet("[action]")]
@@ -39,7 +43,19 @@ namespace stockboi.Controllers
             try
             {
                 user.EmployeeId = GetEmployeeId();
-                _databaseContext.UserInformation.Add(UserMapper.MapFrom(user));
+                
+                var requestContent = new FormUrlEncodedContent(new [] {
+                    new KeyValuePair<string, string>("user[email]", user.Email),
+                    new KeyValuePair<string, string>("user[cellphone]", user.PhoneNumber),
+                    new KeyValuePair<string, string>("user[country_code]", "1"),
+                    new KeyValuePair<string, string>("send_install_link_via_sms", "true")
+                });
+                
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, "users/new") {
+                    Content = requestContent
+                };
+                var result = Send<UserRegistrationResponse>(httpRequest).Result;
+                _databaseContext.UserInformation.Add(UserMapper.MapFrom(user, result));
                 _databaseContext.SaveChanges();
                 return true;
             }
@@ -80,6 +96,14 @@ namespace stockboi.Controllers
             catch(Exception e){
                 throw(e);
             }
+        }
+
+        private async Task<T> Send<T>(HttpRequestMessage requestMessage) {
+             var client = _clientFactory.CreateClient("authy");
+             var httpResponse = await client.SendAsync(requestMessage);
+
+            var result = await httpResponse.Content.ReadAsAsync<T>();
+            return result;
         }
 
         private int GetEmployeeId(){

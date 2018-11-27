@@ -28,7 +28,7 @@ namespace stockboi.Controllers
             var valid = users.Count > 0 ? users[0].Password == request.Password : false;
             
             if (valid) {
-                var authyId = "28301122"; //users[0].AuthyId;
+                var authyId = users[0].AuthyId;
                 var httpRequest = new HttpRequestMessage(HttpMethod.Get, "sms/" + authyId);
                 var result = Send<AuthySMSSendResponse>(httpRequest).Result;
             }
@@ -40,7 +40,7 @@ namespace stockboi.Controllers
 
        [HttpPost]
         public VerifyUsernameAndPasswordResponse VerifyPin([FromBody] VerifyPinRequest request){
-            var authyId = "28301122"; //_databaseContext.UserInformation.Single(x => x.Username ==request.Username).AuthyId;
+            var authyId = _databaseContext.UserInformation.Single(x => x.Username ==request.Username).AuthyId;
             var httpRequest = new HttpRequestMessage(HttpMethod.Get, "verify/" + int.Parse(request.Pin) + "/" + authyId);
             var result = Send<AuthyPinVerificationResponse>(httpRequest).Result;
             
