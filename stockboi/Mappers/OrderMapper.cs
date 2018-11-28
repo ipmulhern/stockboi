@@ -14,6 +14,7 @@ namespace stockboi.Mappers{
 
             return new PastOrdersDatabaseModel{
                 Batch = dbBatch[0].BatchNumber,
+                Count = dbBatch[0].Weight > (double)dbBatch[0].Units ? dbBatch[0].Weight : (double)dbBatch[0].Units,
                 OrderID = id
             };
         }

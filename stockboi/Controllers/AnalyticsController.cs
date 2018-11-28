@@ -21,8 +21,8 @@ namespace stockboi.Controllers
             _databaseContext = databaseContext;
         }
 
-        [HttpGet("[action]")]
-        public ItemExpiredRatio GetAllItemsExpiredRatio()
+        [HttpPost("[action]")]
+        public ItemExpiredRatio GetAllItemsExpiredRatio(AnalyticsRequest request)
         {
             var allItemsExpiredRatio = new ItemExpiredRatio
             {
@@ -33,24 +33,29 @@ namespace stockboi.Controllers
             _databaseContext.PastOrders.ToList().ForEach(pastOrder =>
             {
                 var batch = _databaseContext.Batch.Where(x => x.BatchNumber == pastOrder.Batch).First();
-                allItemsExpiredRatio.Damaged += batch.Damaged;
-                allItemsExpiredRatio.Purchased += (pastOrder.Count - ((double)batch.Units > batch.Weight ? (double)batch.Units : batch.Weight));
-                if (batch.Expiration < DateTime.Today)
+                if (InDateRange(batch.DateReceived, request.StartDate, request.EndDate))
                 {
-                    allItemsExpiredRatio.Expired += ((double)batch.Units > batch.Weight ? (double)batch.Units : batch.Weight);
+                    allItemsExpiredRatio.Damaged += batch.Damaged;
+                    allItemsExpiredRatio.Purchased += (pastOrder.Count - ((double)batch.Units > batch.Weight ? (double)batch.Units : batch.Weight));
+                    if (batch.Expiration < DateTime.Today)
+                    {
+                        allItemsExpiredRatio.Expired += ((double)batch.Units > batch.Weight ? (double)batch.Units : batch.Weight);
+                    }
                 }
             });
             return allItemsExpiredRatio;
         }
 
-        [HttpGet("[action]")]
-        public List<ItemExpiredRatio> GetPercentageExpired(int numberOfItems, bool acsending)
+        [HttpPost("[action]")]
+        public List<ItemExpiredRatio> GetPercentageExpired(AnalyticsRequest request)
         {
             var items = new List<ItemExpiredRatio>();
             _databaseContext.ProductDescription.ToList().ForEach(product =>
             {
                 var item = new ItemExpiredRatio { Name = product.ProductName };
-                _databaseContext.Batch.Where(x => x.UPC == product.UPC).ToList().ForEach(batch =>
+                _databaseContext.Batch
+                    .Where(x => x.UPC == product.UPC && InDateRange(x.DateReceived, request.StartDate, request.EndDate))
+                    .ToList().ForEach(batch =>
                 {
                     var order = _databaseContext.PastOrders.Where(x => x.Batch == batch.BatchNumber).First();
                     item.Purchased += (order.Count - ((double)batch.Units > batch.Weight ? (double)batch.Units : batch.Weight));
@@ -63,9 +68,21 @@ namespace stockboi.Controllers
                 item.Purchased = (item.Purchased / (item.Expired + item.Purchased)) * 100;
                 items.Add(item);
             });
-            items = items.OrderBy(x => x.Expired).ToList().Take(numberOfItems).ToList();
+            items = request.Acsending
+                ? items.OrderBy(x => x.Expired).ToList()
+                : items.OrderByDescending(x => x.Expired).ToList();
+            items = items.Take(request.NumberOfItems).ToList();
+
+            return items;
         }
 
-
+        private bool InDateRange(DateTime date, DateTime startDate, DateTime endDate)
+        {
+            if (startDate != null && endDate != null)
+            {
+                return date < endDate && date > startDate;
+            }
+            return true;
+        }
     }
 }
