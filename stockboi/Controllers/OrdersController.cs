@@ -24,7 +24,7 @@ namespace stockboi.Controllers
             _databaseContext = ctx;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public PagingResponse<Order> GetPastOrders([FromBody] PagingRequest request)
         {
             if (!PermissionHelper.IsAtLeastEmployee(HttpContext)){
@@ -60,7 +60,7 @@ namespace stockboi.Controllers
             };
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public bool SaveOrder([FromBody] List<Batch> Order)
         {
             if (!PermissionHelper.IsAtLeastEmployee(HttpContext)){
@@ -79,7 +79,7 @@ namespace stockboi.Controllers
             }
         }
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public List<ProductDescriptionDatabaseModel> GetAllProductDescriptions()
         {
             if (!PermissionHelper.IsAtLeastEmployee(HttpContext)){
