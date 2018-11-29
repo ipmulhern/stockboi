@@ -89,7 +89,10 @@ namespace stockboi.Controllers
             }
             try
             {
-                _databaseContext.UserInformation.Remove(UserMapper.MapFrom(user));
+                var userToRemove = _databaseContext.UserInformation.Single(x => x.Username == user.Username);
+                var request = new HttpRequestMessage(HttpMethod.Post, "users/" + userToRemove.AuthyId + "/remove");
+                var result = Send<UserRemovalResponse>(request).Result;
+                _databaseContext.UserInformation.Remove(userToRemove);
                 _databaseContext.SaveChanges();
                 return true;
             }

@@ -77,7 +77,7 @@ export class AddUser extends React.Component {
                 </div>
                 <div style={{marginLeft: "20px"}}>
                     <p style={{ display: "inline", verticalAlign: "top" }}>Password: </p>
-                    <input style={{ width: "300px", height: "30px" }} value={this.state.password}
+                    <input type="password" style={{ width: "300px", height: "30px" }} value={this.state.password}
                         onChange={(e) => this.setState({ password: e.target.value })}
                         disabled={this.state.addingUser} />
                 </div>

@@ -13,10 +13,10 @@ using stockboi.RequestModels;
 namespace stockboi.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public class PerishableItemController : Controller
+    public class CurrentStockController : Controller
     {
         private readonly DatabaseContext _databaseContext;
-        public PerishableItemController(DatabaseContext databaseContext)
+        public CurrentStockController(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
         }

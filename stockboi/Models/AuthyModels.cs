@@ -33,7 +33,7 @@ namespace stockboi.Models{
     }
 
     public class UserRegistrationResponse {
-        public Dictionary<string,string> User { get; set; }
+        public Dictionary<string,int> User { get; set; }
         public UserRegistrationError Errors { get; set; }
         public string Message { get; set; }
         public bool Success { get; set; }
@@ -42,5 +42,10 @@ namespace stockboi.Models{
     public class UserRegistrationError {
         public string Email { get; set; }
         public string Cellphone { get; set; }
+    }
+
+    public class UserRemovalResponse {
+        public string Message { get; set; }
+        public bool Success { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace stockboi.Mappers{
 
         public static UserInformationDatabaseModel MapFrom(User user, UserRegistrationResponse userRegistration) {
             var userInfo = MapFrom(user);
-            
+            userInfo.AuthyId = userRegistration.User["id"];
             return userInfo;
         }
 
