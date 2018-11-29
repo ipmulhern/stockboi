@@ -12,16 +12,30 @@ using stockboi.RequestModels;
 
 namespace stockboi.Controllers
 {
-    [Route("api/[controller]")]
-    public class PerishableItemController : Controller
+    [Route("api/[controller]/[action]")]
+    public class CurrentStockController : Controller
     {
         private readonly DatabaseContext _databaseContext;
-        public PerishableItemController(DatabaseContext databaseContext)
+        public CurrentStockController(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
         }
 
-        [HttpPost("[action]")]
+        [HttpGet]
+        public List<PerishableItem> GetPerishableItems()
+        {
+            if (!LoggedInUsers.UserLoggedIn(HttpContext.Session.GetString("Username"))){
+                return new List<PerishableItem>();
+           }
+
+            var perishableItemDatabaseModels = _databaseContext.PerishableItems.ToList();
+            var productDescriptionDatabaseModels = _databaseContext.ProductDescription.ToList();
+            var batchDatabaseModels = _databaseContext.Batch.ToList();
+            var perishableItems = DatabaseModelToModelMapper.MapFrom(perishableItemDatabaseModels, productDescriptionDatabaseModels, batchDatabaseModels);
+            return perishableItems;
+        }
+
+        [HttpPost]
         public PagingResponse<Batch> GetAllItems([FromBody] PagingRequest request){
             if (!PermissionHelper.IsAtLeastEmployee(HttpContext)){
                 throw(new UnauthorizedAccessException());

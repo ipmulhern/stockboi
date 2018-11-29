@@ -32,7 +32,7 @@ export class CurrentStock extends Component {
 
   getItems(page, sortBy){
     this.getSortButtonStyles(sortBy);
-    axios.post('api/PerishableItem/GetAllItems', {
+    axios.post('api/CurrentStock/GetAllItems', {
       NumberOfItemsPerPage: 50,
       PageSelected: page,
       SortBy: sortBy

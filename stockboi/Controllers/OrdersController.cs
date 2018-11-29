@@ -14,7 +14,7 @@ using stockboi.Mappers;
 
 namespace stockboi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class OrdersController : Controller
     {
         private readonly DatabaseContext _databaseContext;
