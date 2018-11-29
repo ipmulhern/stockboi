@@ -19,12 +19,12 @@ export class LogoutTimer extends React.Component{
 
     componentDidMount(){
         this.setState({
-            timer: setTimeout(this.fiveSecondsLeft, 5000)
+            timer: setTimeout(this.fiveSecondsLeft, 625000)
         })
         this.props.emitter.on('userAction', ()=>{
             clearTimeout(this.state.timer);
             this.setState({
-                timer: setTimeout(this.fiveSecondsLeft, 5000),
+                timer: setTimeout(this.fiveSecondsLeft, 625000),
                 timerStopped: true,
                 showModal: false
             });
