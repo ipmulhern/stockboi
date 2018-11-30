@@ -30,6 +30,11 @@ namespace stockboi
                 configuration.RootPath = "ClientApp/build";
             });
 
+            services.AddHttpClient("authy", c => {
+                c.BaseAddress = new System.Uri("http://api.authy.com/protected/json/");
+                c.DefaultRequestHeaders.Add("X-Authy-API-Key", "n3zAKTLCOQw5Gu5Y1c3O4Wfz3XtIbBUN");
+            });
+
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer("Server=tcp:stockboi.database.windows.net,1433;Initial Catalog=Stockboi;Persist Security Info=False;User ID=stockman;Password=Ferguson34;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
