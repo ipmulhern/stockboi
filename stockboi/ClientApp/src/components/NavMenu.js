@@ -46,6 +46,13 @@ export class NavMenu extends Component {
                 User Admin
               </NavItem>
             </LinkContainer>}
+            {(AccessLevel[this.props.permissionLevel] === 'Manager' 
+            || AccessLevel[this.props.permissionLevel] === 'Admin')
+            &&<LinkContainer to={'/Analytics'} exact>
+              <NavItem>
+                Analytics
+              </NavItem>
+            </LinkContainer>}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

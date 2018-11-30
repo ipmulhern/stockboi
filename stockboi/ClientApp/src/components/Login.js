@@ -117,7 +117,6 @@ export class Login extends React.Component {
                         : <p><em>Loading...</em></p>}
                          {this.showError()}
                     </div>
-                    <a style={{position: "absolute", bottom: "15px"}}>Forgot your password?</a>
                 </div>
             </div>
         ); 
